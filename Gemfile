@@ -13,6 +13,10 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
+gem 'carrierwave'
+gem 'globalize', '~> 5.0.0'
+gem 'redcarpet'
+
 group :development do
   gem "rspec-rails"
   gem "factory_girl_rails"
