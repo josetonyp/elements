@@ -3,4 +3,5 @@ Elements::Engine.routes.draw do
   resources :chips
   resources :attachments
   resources :contents
+  resources :pages
 end

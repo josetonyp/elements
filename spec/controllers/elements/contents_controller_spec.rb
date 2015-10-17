@@ -10,9 +10,11 @@ module Elements
     describe "GET #index" do
       it "assigns all contents as @contents" do
         content && published_content && future_content
-        future_content = FactoryGirl.create :future_content
         get :index, { format: :json }
-        expect(assigns(:contents)).to eq([published_content])
+        JSON.parse(response.body).tap do |contents|
+          expect(contents.count).to eq(1)
+          expect(contents.first['id']).to eq(published_content.id)
+        end
       end
     end
 

@@ -3,10 +3,14 @@ module Elements
     module ContentActions
       extend ActiveSupport::Concern
 
+      def content_class
+        Content
+      end
+
       # GET /contents
       def index
         respond_to do |format|
-          format.json { render json: Content.published.all.to_json }
+          format.json { render json: content_class.published.all.to_json }
         end
       end
 
@@ -19,7 +23,7 @@ module Elements
 
       # POST /contents
       def create
-        @content = Content.new(content_params)
+        @content = content_class.new(content_params)
           respond_to do |format|
             format.json do
               if @content.save
@@ -34,7 +38,7 @@ module Elements
       # PATCH/PUT /contents/1
       def update
         I18n.locale = ['locale'].to_sym if params.has_key?('locale')
-        @content = Content.find(params[:id])
+        @content = content_class.find(params[:id])
         respond_to do |format|
           format.json do
             if @content.update(content_params)
@@ -48,7 +52,7 @@ module Elements
 
       # DELETE /contents/1
       def destroy
-        Content.find(params[:id]).destroy
+        content_class.find(params[:id]).destroy
         respond_to do |format|
           format.json { render json: true }
         end
@@ -57,7 +61,7 @@ module Elements
 
       # Use callbacks to share common setup or constraints between actions.
       def content
-        @content = Content.published.find(params[:id])
+        @content = content_class.published.find(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.
