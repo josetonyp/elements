@@ -1,22 +1,16 @@
-require 'redcarpet'
 module Elements
   class Content < ActiveRecord::Base
     translates :value
+    self.inheritance_column = :content_type
 
-    has_many :content_translations
+    has_many :content_translations, foreign_key: :elements_content_id
     accepts_nested_attributes_for :content_translations
+
+    default_scope -> { includes(:content_translations) }
+    scope :published, -> { where( 'publish_at < ?', DateTime.now ) }
 
     validates :name, presence: true
     validates :value, presence: true
 
-    def marked
-      renderer.render(self.value || '')
-    end
-
-    private
-
-      def renderer
-        @renderer ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML, :fenced_code_blocks => true)
-      end
   end
 end

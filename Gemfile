@@ -16,8 +16,12 @@ gemspec
 gem 'carrierwave'
 gem 'globalize', '~> 5.0.0'
 gem 'redcarpet'
+gem 'paper_trail'
+gem 'awesome_nested_set'
 
-group :development do
+group :development, :test do
+  gem "pry-rails"
   gem "rspec-rails"
   gem "factory_girl_rails"
+  gem "capybara"
 end

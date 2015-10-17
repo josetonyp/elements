@@ -1,12 +1,11 @@
 module Elements
   class Chip < ActiveRecord::Base
     translates :value
+    acts_as_nested_set
 
     has_many :chip_translations
     accepts_nested_attributes_for :chip_translations
 
-    belongs_to :parent, class_name: "Chip"
-    has_many :children, class_name: "Chip", foreign_key: "parent_id"
     validates :key,
                 presence: true,
                 format: {
@@ -15,17 +14,6 @@ module Elements
                   }
 
     before_save :add_name, on: :create
-
-    rails_admin do
-      label "Config Chip"
-      edit do
-        fields :key, :parent, :chip_translations
-      end
-      list do
-        fields :key, :path
-        field :format_translations
-      end
-    end
 
     def name
       path
@@ -52,15 +40,6 @@ module Elements
       chip
     end
 
-    def self.children
-      self
-    end
-
-
-    def parent?
-      parent.present?
-    end
-
     def full_path
       (parent? ? "#{parent.full_path}." : "") << key
     end
@@ -69,12 +48,5 @@ module Elements
       self.path = full_path
     end
 
-
-    def self.by_paths
-      all.inject({}) do |all, chip|
-        all[chip.path] = chip.format_translations unless chip.children.any?
-        all
-      end
-    end
   end
 end
