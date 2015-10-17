@@ -1,5 +1,6 @@
 module Elements
   class Content < ActiveRecord::Base
+    has_paper_trail
     translates :value
     self.inheritance_column = :content_type
 

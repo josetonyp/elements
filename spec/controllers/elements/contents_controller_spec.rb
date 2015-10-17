@@ -71,6 +71,8 @@ module Elements
           put :update, {format: :json, :id => content.to_param, :content => { name: "Boo"} }
           content.reload
           expect(content.name).to eq("Boo")
+          expect(content.versions.count).to eq(2)
+          expect(content.previous_version.name).to_not eq(content.name)
         end
 
         it "assigns the requested content as @content" do
