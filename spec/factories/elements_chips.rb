@@ -1,9 +1,8 @@
 FactoryGirl.define do
-  factory :elements_chip, :class => 'Elements::Chip' do
-    value "MyText"
-key "MyString"
-path "MyText"
-parent_id 1
+
+  factory :chip, :class => 'Elements::Chip' do
+    value "a value"
+    key    "something"
   end
 
 end

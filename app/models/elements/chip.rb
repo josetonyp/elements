@@ -13,7 +13,7 @@ module Elements
                   message: "Must consist only of chars from 'a' to 'z'"
                   }
 
-    before_save :add_name, on: :create
+    before_save :add_full_path, on: :create
 
     def name
       path
@@ -44,7 +44,7 @@ module Elements
       (parent? ? "#{parent.full_path}." : "") << key
     end
 
-    def add_name
+    def add_full_path
       self.path = full_path
     end
 

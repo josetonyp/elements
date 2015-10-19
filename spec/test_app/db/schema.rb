@@ -89,14 +89,19 @@ ActiveRecord::Schema.define(version: 20151017160645) do
 
   create_table "elements_menus", force: :cascade do |t|
     t.string   "name"
+    t.string   "label"
+    t.string   "title"
+    t.string   "subtitle"
+    t.string   "icon_class"
+    t.string   "custom_attributes"
     t.integer  "content_id"
     t.integer  "parent_id"
     t.integer  "lft"
     t.integer  "rgt"
     t.integer  "depth"
     t.integer  "children_count"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "versions", force: :cascade do |t|

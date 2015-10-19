@@ -1,12 +1,13 @@
 FactoryGirl.define do
-  factory :elements_menu, :class => 'Elements::Menu' do
-    name ""
-content ""
-parent_id 1
-lft 1
-rgt 1
-depth 1
-children_count 1
+
+  factory :menu_item, :class => 'Elements::Menu' do
+    sequence(:name, 1000) { |n| "Page #{n}" }
+    content
+    label "Menu Label"
+    title "Menu Title"
+    subtitle "Menu Subtitle"
+    icon_class "icon-class"
+    custom_attributes 'sytle="color:red;"'
   end
 
 end
