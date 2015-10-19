@@ -15,13 +15,19 @@ ActiveRecord::Schema.define(version: 20151017160645) do
 
   create_table "elements_attachments", force: :cascade do |t|
     t.string   "name"
+    t.string   "alt"
+    t.string   "title"
+    t.string   "copy_right"
+    t.string   "creator"
+    t.string   "custom_attributes"
+    t.string   "html_class"
     t.string   "file_name"
     t.string   "file_mime_type"
     t.string   "file_size"
     t.integer  "creator_id"
     t.integer  "updater_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "elements_chip_translations", force: :cascade do |t|
