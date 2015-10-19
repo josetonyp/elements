@@ -1,46 +1,48 @@
 module Elements
   module Concerns
-    module MenuActions
+    module ChipActions
       extend ActiveSupport::Concern
 
       # GET /menus
       def index
-        @menus = Menu.all.map(&:format_json)
+        @chips = Chip.all.map(&:format_json)
         respond_to do |format|
-          format.json { render json: @menus.to_json }
+          format.json { render json: @chips.to_json }
         end
       end
 
-      # GET /menus/1
+      # GET /chips/1
       def show
         respond_to do |format|
-          format.json { render json: menu.format_json.to_json }
+          format.json { render json: chip.to_json }
         end
       end
 
-      # POST /menus
+      # POST /chips
       def create
-        @menu = Menu.new(menu_params)
+        @chip = Chip.new(chip_params)
         respond_to do |format|
           format.json do
-            if @menu.save
-              render json: @menu.to_json
+            if @chip.save
+              render json: @chip.to_json
             else
-              render json: { errors: @menu.errors }.to_json
+              render json: { errors: @chip.errors }.to_json
             end
           end
         end
       end
 
-      # PATCH/PUT /menus/1
+      # PATCH/PUT /chips/1
       def update
-        @menu = menu
+        @chip = chip
+        chip_params_filtered = chip_params
+        chip_params_filtered.delete('key')
         respond_to do |format|
           format.json do
-            if @menu.update(menu_params)
-              render json: @menu.to_json
+            if @chip.update(chip_params_filtered)
+              render json: @chip.to_json
             else
-              render json: { errors: @menu.errors }.to_json
+              render json: { errors: @chip.errors }.to_json
             end
           end
         end
@@ -48,22 +50,23 @@ module Elements
 
       # DELETE /menus/1
       def destroy
-        menu.destroy
+        chip.destroy
         respond_to do |format|
           format.json { render json: true }
         end
       end
 
-      private
 
+
+      private
         # Use callbacks to share common setup or constraints between actions.
-        def menu
-          @menu = Menu.find(params[:id])
+        def chip
+          @chip = Chip.find(params[:id])
         end
 
         # Only allow a trusted parameter "white list" through.
-        def menu_params
-          params.require(:menu).permit( Menu::ATTRIBUTES )
+        def chip_params
+          params.require(:chip).permit(Chip::ATTRIBUTES)
         end
 
     end

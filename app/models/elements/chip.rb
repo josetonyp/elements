@@ -1,5 +1,6 @@
 module Elements
   class Chip < ActiveRecord::Base
+    ATTRIBUTES = [:key, :value, :parent_id]
     translates :value
     acts_as_nested_set
 
@@ -41,7 +42,7 @@ module Elements
     end
 
     def full_path
-      (parent? ? "#{parent.full_path}." : "") << key
+      (self.parent.present? ? "#{parent.full_path}." : "") << key
     end
 
     def add_full_path

@@ -3,35 +3,27 @@ module Elements
   RSpec.describe ChipsController, type: :controller do
     routes { Elements::Engine.routes }
 
-    let(:chip) { FactoryGirl.create :chip }
+    let(:chip) { FactoryGirl.create(:chip) }
 
     describe "GET #index" do
       it "assigns all chips as @chips" do
-        get :index, {}, valid_session
-        expect(assigns(:chips)).to eq([chip])
+        chip
+        get :index, { format: :json }
+        JSON.parse(response.body).tap do |chips|
+          expect(chips.count).to eq(1)
+          expect(chips.last['key']).to eq( chip.key )
+          expect(chips.last['key']).to eq( chip.path )
+        end
       end
     end
 
     describe "GET #show" do
       it "assigns the requested chip as @chip" do
-        chip = Chip.create! valid_attributes
-        get :show, {:id => chip.to_param}, valid_session
-        expect(assigns(:chip)).to eq(chip)
-      end
-    end
-
-    describe "GET #new" do
-      it "assigns a new chip as @chip" do
-        get :new, {}, valid_session
-        expect(assigns(:chip)).to be_a_new(Chip)
-      end
-    end
-
-    describe "GET #edit" do
-      it "assigns the requested chip as @chip" do
-        chip = Chip.create! valid_attributes
-        get :edit, {:id => chip.to_param}, valid_session
-        expect(assigns(:chip)).to eq(chip)
+        chip
+        get :show, {format: :json, :id => chip.to_param}
+        JSON.parse(response.body).tap do |json_chip|
+          expect(json_chip['id']).to eq(chip.id)
+        end
       end
     end
 
@@ -39,88 +31,67 @@ module Elements
       context "with valid params" do
         it "creates a new Chip" do
           expect {
-            post :create, {:chip => valid_attributes}, valid_session
+            post :create, { format: :json, :chip => FactoryGirl.attributes_for(:chip) }
           }.to change(Chip, :count).by(1)
         end
 
-        it "assigns a newly created chip as @chip" do
-          post :create, {:chip => valid_attributes}, valid_session
-          expect(assigns(:chip)).to be_a(Chip)
-          expect(assigns(:chip)).to be_persisted
-        end
+        it "adds a children with the correct path" do
+          chip = FactoryGirl.create(:chip, key: "first")
+          sub_chip = FactoryGirl.attributes_for(:chip, key: "second")
+          sub_chip[:parent_id] = chip.id
 
-        it "redirects to the created chip" do
-          post :create, {:chip => valid_attributes}, valid_session
-          expect(response).to redirect_to(Chip.last)
+          post :create, { format: :json, :chip => sub_chip}
+          JSON.parse(response.body).tap do |json_chip|
+            expect(json_chip['path']).to eq("first.second")
+          end
         end
       end
 
       context "with invalid params" do
-        it "assigns a newly created but unsaved chip as @chip" do
-          post :create, {:chip => invalid_attributes}, valid_session
-          expect(assigns(:chip)).to be_a_new(Chip)
-        end
-
-        it "re-renders the 'new' template" do
-          post :create, {:chip => invalid_attributes}, valid_session
-          expect(response).to render_template("new")
+        it "doesn't save without valid params" do
+          expect {
+            post :create, { format: :json, :chip => FactoryGirl.attributes_for(:chip, key: "") }
+          }.to_not change(Chip, :count)
+          expect {
+            post :create, { format: :json, :chip => FactoryGirl.attributes_for(:chip, key: "Wrong Key") }
+          }.to_not change(Chip, :count)
+          JSON.parse(response.body).tap do |json_chip|
+            expect(json_chip["errors"]).to_not be_empty
+          end
         end
       end
     end
 
     describe "PUT #update" do
       context "with valid params" do
-        let(:new_attributes) {
-          skip("Add a hash of attributes valid for your model")
-        }
-
         it "updates the requested chip" do
-          chip = Chip.create! valid_attributes
-          put :update, {:id => chip.to_param, :chip => new_attributes}, valid_session
-          chip.reload
-          skip("Add assertions for updated state")
-        end
-
-        it "assigns the requested chip as @chip" do
-          chip = Chip.create! valid_attributes
-          put :update, {:id => chip.to_param, :chip => valid_attributes}, valid_session
-          expect(assigns(:chip)).to eq(chip)
-        end
-
-        it "redirects to the chip" do
-          chip = Chip.create! valid_attributes
-          put :update, {:id => chip.to_param, :chip => valid_attributes}, valid_session
-          expect(response).to redirect_to(chip)
+          chip
+          second = FactoryGirl.create(:chip)
+          put :update, { format: :json, :id => chip.to_param, :chip => { parent_id: second.id } }
+          JSON.parse(response.body).tap do |json_chip|
+            expect(json_chip['parent_id']).to eq(second.id)
+          end
         end
       end
 
       context "with invalid params" do
-        it "assigns the chip as @chip" do
-          chip = Chip.create! valid_attributes
-          put :update, {:id => chip.to_param, :chip => invalid_attributes}, valid_session
-          expect(assigns(:chip)).to eq(chip)
-        end
-
-        it "re-renders the 'edit' template" do
-          chip = Chip.create! valid_attributes
-          put :update, {:id => chip.to_param, :chip => invalid_attributes}, valid_session
-          expect(response).to render_template("edit")
+        it "doesn't change the key but the value" do
+          chip
+          put :update, { format: :json, :id => chip.to_param, :chip => { key: "newkey", value: "buu"}}
+          JSON.parse(response.body).tap do |json_chip|
+            expect(json_chip['key']).to_not eq("newkey")
+            expect(json_chip['value']).to eq("buu")
+          end
         end
       end
     end
 
     describe "DELETE #destroy" do
       it "destroys the requested chip" do
-        chip = Chip.create! valid_attributes
+        chip
         expect {
-          delete :destroy, {:id => chip.to_param}, valid_session
+          delete :destroy, { format: :json, :id => chip.to_param}
         }.to change(Chip, :count).by(-1)
-      end
-
-      it "redirects to the chips list" do
-        chip = Chip.create! valid_attributes
-        delete :destroy, {:id => chip.to_param}, valid_session
-        expect(response).to redirect_to(chips_url)
       end
     end
 
