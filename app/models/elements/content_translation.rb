@@ -1,5 +1,5 @@
 module Elements
-  class ContentTranslation < ActiveRecord::Base
+  class ContentTranslation < Base
     belongs_to :workshop
 
     validates :locale, uniqueness: { scope: :elements_content_id, message: "should happen once per Content" }

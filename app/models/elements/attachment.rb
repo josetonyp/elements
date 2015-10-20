@@ -1,5 +1,5 @@
 module Elements
-  class Attachment < ActiveRecord::Base
+  class Attachment < Base
     self.inheritance_column = :attachment_type
 
     ATTRIBUTES = [:name, :alt, :title, :copy_right, :creator, :custom_attributes, :html_class, :file]

@@ -1,5 +1,5 @@
 module Elements
-  class Menu < ActiveRecord::Base
+  class Menu < Base
     ATTRIBUTES = [:name, :parent_id, :label, :title, :subtitle, :icon_class, :custom_attributes]
     acts_as_nested_set
 

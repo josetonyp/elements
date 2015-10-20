@@ -1,5 +1,5 @@
 module Elements
-  class Chip < ActiveRecord::Base
+  class Chip < Base
     ATTRIBUTES = [:key, :value, :parent_id]
     translates :value
     acts_as_nested_set
