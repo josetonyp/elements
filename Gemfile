@@ -18,6 +18,8 @@ gem 'globalize', '~> 5.0.0'
 gem 'redcarpet'
 gem 'paper_trail'
 gem 'awesome_nested_set'
+gem 'carrierwave'
+gem 'mini_magick'
 
 group :development, :test do
   gem "pry-rails"

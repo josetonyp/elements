@@ -2,58 +2,6 @@ require_dependency "elements/application_controller"
 
 module Elements
   class AttachmentsController < ApplicationController
-    before_action :set_attachment, only: [:show, :edit, :update, :destroy]
-
-    # GET /attachments
-    def index
-      @attachments = Attachment.all
-      respond_to do |format|
-        format.json { render json: @attachments.to_json }
-      end
-    end
-
-    # GET /attachments/1
-    def show
-      respond_to do |format|
-        format.json { render json: @attachment.to_json }
-      end
-    end
-
-    # POST /attachments
-    def create
-      @attachment = Attachment.new(attachment_params)
-
-      if @attachment.save
-        redirect_to @attachment, notice: 'Attachment was successfully created.'
-      else
-        render :new
-      end
-    end
-
-    # PATCH/PUT /attachments/1
-    def update
-      if @attachment.update(attachment_params)
-        redirect_to @attachment, notice: 'Attachment was successfully updated.'
-      else
-        render :edit
-      end
-    end
-
-    # DELETE /attachments/1
-    def destroy
-      @attachment.destroy
-      redirect_to attachments_url, notice: 'Attachment was successfully destroyed.'
-    end
-
-    private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_attachment
-        @attachment = Attachment.find(params[:id])
-      end
-
-      # Only allow a trusted parameter "white list" through.
-      def attachment_params
-        params.require(:attachment).permit(:name, :file_name, :file_mime_type, :file_size, :creator_id, :updater_id)
-      end
+    include Elements::Concerns::AttachmentActions
   end
 end

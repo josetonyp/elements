@@ -18,12 +18,12 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails", "~> 4.2.4"
-  s.add_dependency 'carrierwave'
   s.add_dependency 'globalize', '~> 5.0.0'
   s.add_dependency 'redcarpet'
   s.add_dependency 'paper_trail'
   s.add_dependency 'awesome_nested_set'
-  s.add_dependency 'squeel'
+  s.add_dependency 'carrierwave'
+  s.add_dependency 'mini_magick'
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency 'rspec-rails'

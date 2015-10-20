@@ -1,11 +1,22 @@
 FactoryGirl.define do
-  factory :elements_attachment, :class => 'Elements::Attachment' do
+  factory :attachment, :class => 'Elements::Attachment' do
     name "MyString"
-file_name "MyString"
-file_mime_type "MyString"
-file_size "MyString"
-creator_id 1
-updater_id 1
+    alt "Some Attachment Info"
+    title "Some Attachment Info"
+    copy_right "Some Attachment Info"
+    creator "Some Attachment Info"
+    custom_attributes "Some Attachment Info"
+    html_class "Some Attachment Info"
+    file { Rack::Test::UploadedFile.new(File.join('spec', 'attachments', 'SamplePDF.pdf')) }
   end
-
+  factory :picture, :class => 'Elements::Picture' do
+    name "MyString"
+    alt "Some Attachment Info"
+    title "Some Attachment Info"
+    copy_right "Some Attachment Info"
+    creator "Some Attachment Info"
+    custom_attributes "Some Attachment Info"
+    html_class "Some Attachment Info"
+    file { Rack::Test::UploadedFile.new(File.join('spec', 'attachments', 'signal.png')) }
+  end
 end

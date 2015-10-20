@@ -8,8 +8,9 @@ class CreateElementsAttachments < ActiveRecord::Migration
       t.string :creator
       t.string :custom_attributes
       t.string :html_class
+      t.string :attachment_type
 
-      t.string :file_name
+      t.string :file
       t.string :file_mime_type
       t.string :file_size
       t.integer :creator_id
