@@ -6,7 +6,6 @@ class AddTranslation < ActiveRecord::Migration
   end
 
   def down
-    drop_table :elements_contents
     drop_table :elements_content_translations
   end
 end

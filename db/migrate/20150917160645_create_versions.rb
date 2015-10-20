@@ -7,7 +7,7 @@ class CreateVersions < ActiveRecord::Migration
   TEXT_BYTES = 1_073_741_823
 
   def change
-    create_table :versions do |t|
+    create_table :elements_versions do |t|
       t.string   :item_type, :null => false
       t.integer  :item_id,   :null => false
       t.string   :event,     :null => false
@@ -15,6 +15,6 @@ class CreateVersions < ActiveRecord::Migration
       t.text     :object,    :limit => TEXT_BYTES
       t.datetime :created_at
     end
-    add_index :versions, [:item_type, :item_id]
+    add_index :elements_versions, [:item_type, :item_id]
   end
 end

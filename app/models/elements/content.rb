@@ -1,6 +1,7 @@
 module Elements
   class Content < Base
-    has_paper_trail
+    has_paper_trail class_name: 'Elements::Version'
+
     translates :value
     self.inheritance_column = :content_type
 
