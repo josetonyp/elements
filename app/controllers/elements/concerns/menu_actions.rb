@@ -24,7 +24,7 @@ module Elements
         respond_to do |format|
           format.json do
             if @menu.save
-              render json: @menu.to_json
+              render json: @menu.format_json.to_json
             else
               render json: { errors: @menu.errors }.to_json
             end
@@ -38,7 +38,7 @@ module Elements
         respond_to do |format|
           format.json do
             if @menu.update(menu_params)
-              render json: @menu.to_json
+              render json: @menu.format_json.to_json
             else
               render json: { errors: @menu.errors }.to_json
             end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151017125040) do
+ActiveRecord::Schema.define(version: 20150917160645) do
 
   create_table "elements_attachments", force: :cascade do |t|
     t.string   "name"
@@ -60,13 +60,12 @@ ActiveRecord::Schema.define(version: 20151017125040) do
     t.string   "locale",              null: false
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
-    t.string   "value"
+    t.text     "value"
     t.text     "title"
     t.text     "meta_title"
     t.text     "meta_description"
     t.text     "meta_keyword"
     t.text     "excerpt"
-    t.string   "content_type"
   end
 
   add_index "elements_content_translations", ["elements_content_id"], name: "index_elements_content_translations_on_elements_content_id"
@@ -79,8 +78,6 @@ ActiveRecord::Schema.define(version: 20151017125040) do
     t.integer  "position"
     t.integer  "creator_id"
     t.integer  "updater_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
     t.text     "path"
     t.text     "title"
     t.text     "meta_title"
@@ -92,6 +89,8 @@ ActiveRecord::Schema.define(version: 20151017125040) do
     t.string   "content_type"
     t.string   "latitude"
     t.string   "longitude"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   create_table "elements_menus", force: :cascade do |t|

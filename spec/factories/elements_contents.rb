@@ -5,7 +5,7 @@ FactoryGirl.define do
     value "Element Content"
     creator_id "Element Content"
     updater_id "Element Content"
-    path "element-content"
+    path "element-content-path"
     title "Some title"
     meta_title "Element Content"
     meta_description "Element Content"

@@ -1,6 +1,9 @@
 module Elements
   class Menu < Base
-    ATTRIBUTES = [:name, :parent_id, :label, :title, :subtitle, :icon_class, :custom_attributes]
+
+    attr_accessor :path
+
+    ATTRIBUTES = [:name, :parent_id, :label, :title, :subtitle, :icon_class, :custom_attributes, :path]
     acts_as_nested_set
 
     belongs_to :content
@@ -10,7 +13,7 @@ module Elements
     before_save :create_content,  on: :create
 
     def format_json
-      {
+      out = {
         id: id,
         name: name,
         parent_id: parent_id,
@@ -21,11 +24,28 @@ module Elements
         icon_class: icon_class,
         custom_attributes: custom_attributes
       }
+      out[:content_path] = content_path if content.present?
+      out
+    end
+
+    def content_path
+      content.path
+    end
+
+    def full_path
+      (self.parent.present? ? "/#{parent.content_path.gsub(/^\//, '')}/" : "") << (@path.present? ? @path : name.parameterize)
+    end
+
+    def update_path(new_path = nil)
+      @path = new_path
+      content.path = full_path
+      content.save
+      content.path
     end
 
     private
       def create_content
-        self.content = Page.create( name: self.name, value: self.name ) if self.content_id.nil?
+        self.content = Page.create( name: self.name, value: self.name, path: full_path ) if self.content_id.nil?
       end
 
   end

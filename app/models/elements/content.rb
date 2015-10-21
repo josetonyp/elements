@@ -2,7 +2,7 @@ module Elements
   class Content < Base
     has_paper_trail class_name: 'Elements::Version'
 
-    translates :value
+    translates :value, :title, :meta_title, :meta_description, :meta_keyword, :excerpt
     self.inheritance_column = :content_type
 
     has_many :content_translations, foreign_key: :elements_content_id

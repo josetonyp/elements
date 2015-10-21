@@ -37,7 +37,7 @@ module Elements
 
       # PATCH/PUT /contents/1
       def update
-        I18n.locale = ['locale'].to_sym if params.has_key?('locale')
+        I18n.locale = params['locale'].to_sym if params.has_key?('locale')
         @content = content_class.find(params[:id])
         respond_to do |format|
           format.json do

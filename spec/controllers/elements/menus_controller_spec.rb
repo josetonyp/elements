@@ -50,6 +50,39 @@ module Elements
           }.to change(Menu, :count).by(1)
           JSON.parse(response.body).tap do |menu|
             expect(menu["parent_id"]).to eq(menu_item.children.first.id)
+            expect(menu["depth"]).to eq(2)
+          end
+        end
+
+
+        it "creates a menu specifying its path to the content" do
+          root_item = FactoryGirl.create(:menu_item)
+          new_menu = FactoryGirl.attributes_for(:menu_item)
+          new_menu[:parent_id] = root_item.id
+          new_menu[:path] = "some-diff-path"
+
+          post :create, { format: :json, :menu => new_menu }
+          JSON.parse(response.body).tap do |menu|
+            expect(menu["parent_id"]).to eq(root_item.id)
+            expect(menu["depth"]).to eq(1)
+            expect(menu["content_path"]).to eq("/#{root_item.content.path}/some-diff-path")
+          end
+        end
+
+        it "creates a menu with full content based on tree hierarchy" do
+          menu_item
+          menu_item.update_path
+          parent = menu_item.children.first
+          parent.update_path
+          new_menu = FactoryGirl.attributes_for(:menu_item)
+          new_menu[:parent_id] = parent.id
+          new_menu[:path] = "some-fancy-diff-path"
+
+          post :create, { format: :json, :menu => new_menu }
+          JSON.parse(response.body).tap do |menu|
+            expect(menu["parent_id"]).to eq(parent.id)
+            expect(menu["depth"]).to eq(2)
+            expect(menu["content_path"]).to eq("#{parent.content_path}/some-fancy-diff-path")
           end
         end
       end
