@@ -16,5 +16,20 @@ module Elements
     validates :value, presence: true
     validates :path, presence: true, uniqueness: true
 
+    before_destroy :validate_published
+
+
+    def publish!
+      self.publish_at = DateTime.now
+      self.save
+      self
+    end
+
+    private
+
+      def validate_published
+        raise "Elements::Content #{self.id} can't be delete as is published" unless self.publish_at.nil?
+      end
+
   end
 end

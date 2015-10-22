@@ -39,5 +39,13 @@ module Elements
       I18n.locale = :de
       expect(menu_item.name).to eq("Some German Name")
     end
+
+    it "can't be deleted if content is published" do
+      menu_item = FactoryGirl.create(:menu_item)
+      menu_item.content.publish!
+      expect {
+        menu_item.destroy
+       }.to raise_error
+    end
   end
 end
