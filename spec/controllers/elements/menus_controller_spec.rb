@@ -69,7 +69,7 @@ module Elements
           JSON.parse(response.body).tap do |menu|
             expect(menu["parent_id"]).to eq(root_item.id)
             expect(menu["depth"]).to eq(1)
-            expect(menu["content_path"]).to eq("/#{root_item.content.path}/some-diff-path")
+            expect(menu["href"]).to eq("/#{root_item.content.path}/some-diff-path")
           end
         end
 
@@ -86,7 +86,16 @@ module Elements
           JSON.parse(response.body).tap do |menu|
             expect(menu["parent_id"]).to eq(parent.id)
             expect(menu["depth"]).to eq(2)
-            expect(menu["content_path"]).to eq("#{parent.content_path}/some-fancy-diff-path")
+            expect(menu["href"]).to eq("#{parent.content_path}/some-fancy-diff-path")
+          end
+        end
+
+        it "create a menu without content if url is specifed" do
+          new_menu = FactoryGirl.attributes_for(:menu_item)
+          new_menu['url'] = "http://www.google.com"
+          post :create, { format: :json, :menu => new_menu }
+          JSON.parse(response.body).tap do |menu|
+            expect(menu["href"]).to eq(new_menu['url'])
           end
         end
       end

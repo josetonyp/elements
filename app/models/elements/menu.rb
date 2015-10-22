@@ -5,7 +5,7 @@ module Elements
 
     translates :name, :label, :title, :subtitle, :icon_class, :custom_attributes
 
-    ATTRIBUTES = [:name, :parent_id, :label, :title, :subtitle, :icon_class, :custom_attributes, :path]
+    ATTRIBUTES = [:name, :parent_id, :label, :title, :subtitle, :icon_class, :custom_attributes, :path, :url, :target]
     acts_as_nested_set
 
     belongs_to :content
@@ -19,7 +19,7 @@ module Elements
     before_destroy :remove_content
 
     def format_json
-      out = {
+      {
         id: id,
         name: name,
         parent_id: parent_id,
@@ -28,14 +28,18 @@ module Elements
         title: title,
         subtitle: subtitle,
         icon_class: icon_class,
-        custom_attributes: custom_attributes
+        custom_attributes: custom_attributes,
+        href: href,
+        target: target
       }
-      out[:content_path] = content_path if content.present?
-      out
     end
 
     def content_path
-      content.path
+      content.present? ? content.path : ""
+    end
+
+    def href
+      self.url.nil? ? self.content_path : self.url
     end
 
     def full_path
