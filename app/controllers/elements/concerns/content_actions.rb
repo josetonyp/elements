@@ -66,8 +66,7 @@ module Elements
 
       # Only allow a trusted parameter "white list" through.
       def content_params
-        allowed = [:name, :value, :multiline, :position, :creator_id, :updater_id, :title, :meta_title, :meta_description, :meta_keyword, :excerpt, :status, :publish_at, :latitude, :longitude]
-        params.require(:content).permit(allowed)
+        params.require(:content).permit(Elements::Content::ATTRIBUTES)
       end
 
     end

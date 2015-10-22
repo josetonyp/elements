@@ -1,5 +1,6 @@
 module Elements
   class Content < Base
+    ATTRIBUTES = [:name, :value, :path, :multiline, :position, :creator_id, :updater_id, :title, :meta_title, :meta_description, :meta_keyword, :excerpt, :status, :publish_at, :latitude, :longitude]
     has_paper_trail class_name: 'Elements::Version'
 
     translates :value, :title, :meta_title, :meta_description, :meta_keyword, :excerpt
@@ -13,6 +14,7 @@ module Elements
 
     validates :name, presence: true
     validates :value, presence: true
+    validates :path, presence: true, uniqueness: true
 
   end
 end

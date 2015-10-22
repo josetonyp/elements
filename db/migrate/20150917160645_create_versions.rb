@@ -24,7 +24,7 @@ class CreateVersions < ActiveRecord::Migration
       t.integer :position
       t.integer :creator_id
       t.integer :updater_id
-      t.text :path
+      t.string :path
       t.text :title
       t.text :meta_title
       t.text :meta_description
@@ -38,6 +38,11 @@ class CreateVersions < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+
+    add_index :elements_contents, [:content_type], name: 'elements_contents_content_type'
+    add_index :elements_contents, [:path], unique: true, name: 'unique_elements_contents_path'
+    add_index :elements_contents, [:status], name: 'elements_contents_status'
+    add_index :elements_contents, [:publish_at], name: 'elements_contents_publish_at'
 
     Elements::Content.create_translation_table!({
       value: :text,
@@ -67,10 +72,12 @@ class CreateVersions < ActiveRecord::Migration
       t.timestamps null: false
     end
 
+    add_index :elements_attachments, [:attachment_type], name: 'elements_attachments_attachment_type'
+
     create_table :elements_chips do |t|
       t.text :value
       t.string :key
-      t.text :path
+      t.string :path
 
       t.integer :parent_id
       t.integer :lft
@@ -81,6 +88,8 @@ class CreateVersions < ActiveRecord::Migration
       t.timestamps null: false
     end
 
+    add_index :elements_chips, [:path], unique: true, name: 'unique_elements_chips_attachment_path'
+
     Elements::Chip.create_translation_table!({
       value: :string
     })
@@ -89,6 +98,8 @@ class CreateVersions < ActiveRecord::Migration
       t.string :name
       t.string :label
       t.string :title
+      t.string :url
+      t.string :target
       t.string :subtitle
       t.string :icon_class
       t.string :custom_attributes
@@ -112,9 +123,7 @@ class CreateVersions < ActiveRecord::Migration
       custom_attributes: :string
     })
 
-
     Elements::Menu.create( name: "Home", path: '/')
-
   end
 
   def down

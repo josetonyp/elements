@@ -1,11 +1,11 @@
 FactoryGirl.define do
 
   factory :content, :class => 'Elements::Content' do
-    name "Element Content"
+    sequence(:name, 1000) { |n| "Element Content #{n}" }
     value "Element Content"
     creator_id "Element Content"
     updater_id "Element Content"
-    path "element-content-path"
+    sequence(:path, 1000) { |n| "element-content-path-#{n}" }
     title "Some title"
     meta_title "Element Content"
     meta_description "Element Content"

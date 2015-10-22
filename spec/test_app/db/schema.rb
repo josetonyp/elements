@@ -31,6 +31,8 @@ ActiveRecord::Schema.define(version: 20150917160645) do
     t.datetime "updated_at",        null: false
   end
 
+  add_index "elements_attachments", ["attachment_type"], name: "elements_attachments_attachment_type"
+
   create_table "elements_chip_translations", force: :cascade do |t|
     t.integer  "elements_chip_id", null: false
     t.string   "locale",           null: false
@@ -55,6 +57,8 @@ ActiveRecord::Schema.define(version: 20150917160645) do
     t.datetime "updated_at",     null: false
   end
 
+  add_index "elements_chips", ["path"], name: "unique_elements_chips_attachment_path", unique: true
+
   create_table "elements_content_translations", force: :cascade do |t|
     t.integer  "elements_content_id", null: false
     t.string   "locale",              null: false
@@ -78,7 +82,7 @@ ActiveRecord::Schema.define(version: 20150917160645) do
     t.integer  "position"
     t.integer  "creator_id"
     t.integer  "updater_id"
-    t.text     "path"
+    t.string   "path"
     t.text     "title"
     t.text     "meta_title"
     t.text     "meta_description"
@@ -92,6 +96,11 @@ ActiveRecord::Schema.define(version: 20150917160645) do
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
   end
+
+  add_index "elements_contents", ["content_type"], name: "elements_contents_content_type"
+  add_index "elements_contents", ["path"], name: "unique_elements_contents_path", unique: true
+  add_index "elements_contents", ["publish_at"], name: "elements_contents_publish_at"
+  add_index "elements_contents", ["status"], name: "elements_contents_status"
 
   create_table "elements_menu_translations", force: :cascade do |t|
     t.integer  "elements_menu_id",  null: false
@@ -113,6 +122,8 @@ ActiveRecord::Schema.define(version: 20150917160645) do
     t.string   "name"
     t.string   "label"
     t.string   "title"
+    t.string   "url"
+    t.string   "target"
     t.string   "subtitle"
     t.string   "icon_class"
     t.string   "custom_attributes"

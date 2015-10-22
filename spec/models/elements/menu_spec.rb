@@ -8,10 +8,36 @@ module Elements
         item.save
       end
       item = menu_item.children.first
-      expect(item.content.path).to eq("element-content-path") #Factory Content Path
       item.update_path('some-fancy-new-path')
-      expect(item.content.path).to eq("/element-content-path/some-fancy-new-path")
-      expect(item.content_path).to eq("/element-content-path/some-fancy-new-path")
+      expect(item.content.path).to eq("/#{menu_item.content_path}/some-fancy-new-path")
+      expect(item.content_path).to eq("/#{menu_item.content_path}/some-fancy-new-path")
+    end
+
+    it "translates for fields" do
+      menu_item = FactoryGirl.create(:menu_item)
+      en_name = menu_item.name
+      expect(menu_item.name).to_not be_nil
+
+      I18n.locale = :de
+
+      menu_item.reload.tap do |item|
+        expect(menu_item.name).to be_nil
+        expect(menu_item.label).to be_nil
+        expect(menu_item.title).to be_nil
+        expect(menu_item.subtitle).to be_nil
+        expect(menu_item.icon_class).to be_nil
+        expect(menu_item.custom_attributes).to be_nil
+      end
+
+      menu_item.name = "Some German Name"
+      menu_item.save
+      menu_item.reload
+
+      I18n.locale = :en
+      expect(menu_item.name).to eq(en_name)
+
+      I18n.locale = :de
+      expect(menu_item.name).to eq("Some German Name")
     end
   end
 end

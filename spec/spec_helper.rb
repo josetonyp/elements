@@ -11,6 +11,8 @@ Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 FactoryGirl.definition_file_paths = [File.expand_path('../factories', __FILE__)]
 FactoryGirl.find_definitions
 
+I18n.available_locales = [:en, :de, :es]
+
 RSpec.configure do |config|
   config.mock_with :rspec
   config.use_transactional_fixtures = true
@@ -38,6 +40,10 @@ RSpec.configure do |config|
     # a real object. This is generally recommended, and will default to
     # `true` in RSpec 4.
     mocks.verify_partial_doubles = true
+  end
+
+  config.before(:each) do
+    I18n.locale = :en
   end
 
 # The settings below are suggested to provide a good initial experience
