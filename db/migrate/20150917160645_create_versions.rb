@@ -25,6 +25,8 @@ class CreateVersions < ActiveRecord::Migration
       t.integer :creator_id
       t.integer :updater_id
       t.string :path
+      t.string :template
+      t.integer :template_id
       t.text :title
       t.text :meta_title
       t.text :meta_description
