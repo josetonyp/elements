@@ -3,6 +3,10 @@ module Elements
   RSpec.describe MenusController, type: :controller do
     routes { Elements::Engine.routes }
 
+    before(:each) do
+      Menu.destroy_all
+    end
+
     let(:menu_item) do
       FactoryGirl.create(:menu_item).tap do |item|
         item.children << FactoryGirl.create(:menu_item)

@@ -1,6 +1,6 @@
 module Elements
   class ChipTranslation < Base
-    belongs_to :chip
+    belongs_to :chip, class_name: 'Elements::Chip'
 
     validates :locale, uniqueness: { scope: :elements_chip_id, message: "should happen once per Chip" }
 

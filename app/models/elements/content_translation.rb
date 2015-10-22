@@ -1,6 +1,6 @@
 module Elements
   class ContentTranslation < Base
-    belongs_to :workshop
+    belongs_to :content, class_name: 'Elements::Content'
 
     validates :locale, uniqueness: { scope: :elements_content_id, message: "should happen once per Content" }
 

@@ -3,14 +3,20 @@ module Elements
 
     attr_accessor :path
 
+    translates :name, :label, :title, :subtitle, :icon_class, :custom_attributes
+
     ATTRIBUTES = [:name, :parent_id, :label, :title, :subtitle, :icon_class, :custom_attributes, :path]
     acts_as_nested_set
 
     belongs_to :content
+    has_many :menu_translations, foreign_key: :elements_menu_id
+    accepts_nested_attributes_for :menu_translations
 
     validates :name, presence: true
 
     before_save :create_content,  on: :create
+
+    before_destroy :remove_content
 
     def format_json
       out = {
@@ -38,14 +44,18 @@ module Elements
 
     def update_path(new_path = nil)
       @path = new_path
-      content.path = full_path
+      content.path = full_path.gsub('//', '/')
       content.save
       content.path
     end
 
     private
       def create_content
-        self.content = Page.create( name: self.name, value: self.name, path: full_path ) if self.content_id.nil?
+        self.content = Page.create( name: self.name, value: self.name, path: full_path.gsub('//', '/') ) if self.content_id.nil?
+      end
+
+      def remove_content
+        self.content.destroy if self.content.present?
       end
 
   end

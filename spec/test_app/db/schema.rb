@@ -93,6 +93,22 @@ ActiveRecord::Schema.define(version: 20150917160645) do
     t.datetime "updated_at",                       null: false
   end
 
+  create_table "elements_menu_translations", force: :cascade do |t|
+    t.integer  "elements_menu_id",  null: false
+    t.string   "locale",            null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "name"
+    t.string   "label"
+    t.string   "title"
+    t.string   "subtitle"
+    t.string   "icon_class"
+    t.string   "custom_attributes"
+  end
+
+  add_index "elements_menu_translations", ["elements_menu_id"], name: "index_elements_menu_translations_on_elements_menu_id"
+  add_index "elements_menu_translations", ["locale"], name: "index_elements_menu_translations_on_locale"
+
   create_table "elements_menus", force: :cascade do |t|
     t.string   "name"
     t.string   "label"

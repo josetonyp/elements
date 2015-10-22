@@ -103,6 +103,18 @@ class CreateVersions < ActiveRecord::Migration
       t.timestamps null: false
     end
 
+    Elements::Menu.create_translation_table!({
+      name: :string,
+      label: :string,
+      title: :string,
+      subtitle: :string,
+      icon_class: :string,
+      custom_attributes: :string
+    })
+
+
+    Elements::Menu.create( name: "Home", path: '/')
+
   end
 
   def down
