@@ -134,6 +134,7 @@ class CreateVersions < ActiveRecord::Migration
     drop_table :elements_content_translations
     drop_table :elements_attachments
     drop_table :elements_menus
+    drop_table :elements_menu_translations
     drop_table :elements_chips
     drop_table :elements_chip_translations
   end
