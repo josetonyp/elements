@@ -1,10 +1,22 @@
 module Elements
   class Chip < Base
+
+    class Translation < Base
+      belongs_to :chip, class_name: 'Elements::Chip'
+
+      validates :locale, uniqueness: { scope: :elements_chip_id, message: "should happen once per Chip" }
+
+      def locale_enum
+        I18n.available_locales
+      end
+
+    end
+
     ATTRIBUTES = [:key, :value, :parent_id]
     translates :value
     acts_as_nested_set
 
-    has_many :chip_translations
+    has_many :chip_translations, class_name: 'Chip::Translation'
     accepts_nested_attributes_for :chip_translations
 
     validates :key,
