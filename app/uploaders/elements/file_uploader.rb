@@ -6,7 +6,7 @@ module Elements
     # Include RMagick or MiniMagick support:
     # include CarrierWave::RMagick
     # include CarrierWave::MiniMagick
-
+    include CarrierWave::MimeTypes
     # Choose what kind of storage to use for this uploader:
     storage :file
     # storage :fog
@@ -14,7 +14,26 @@ module Elements
     # Override the directory where uploaded files will be stored.
     # This is a sensible default for uploaders that are meant to be mounted:
     def store_dir
-      "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+      "uploads/#{model.class.to_s.underscore}"
+    end
+
+    def filename
+      if original_filename
+        @name ||= "#{model.id}#{Digest::MD5.hexdigest(File.dirname(current_path))}"
+        "#{@name}.#{file.extension.downcase}"
+      end
+    end
+
+    def file_url
+      "/uploads/#{model.class.to_s.underscore}/#{@name}.#{file.extension.downcase}"
+    end
+
+    process :set_content_type
+    process :save_content_type_and_size_in_model
+
+    def save_content_type_and_size_in_model
+      model.file_mime_type = file.content_type if file.content_type
+      model.file_size = file.size
     end
 
     # Provide a default URL as a default if there hasn't been a file uploaded:

@@ -47,5 +47,13 @@ module Elements
         menu_item.destroy
        }.to raise_error
     end
+
+
+    it "can't be deleted if is the root of the site" do
+      menu_item = FactoryGirl.create( :menu_item, path: '/', name: 'Home')
+      expect {
+        menu_item.destroy
+      }.to raise_error
+    end
   end
 end

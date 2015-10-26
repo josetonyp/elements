@@ -68,12 +68,14 @@ class CreateVersions < ActiveRecord::Migration
       t.string :file
       t.string :file_mime_type
       t.string :file_size
+      t.string :file_url
       t.integer :creator_id
       t.integer :updater_id
 
       t.timestamps null: false
     end
 
+    add_index :elements_attachments, [:file_url], name: 'elements_attachments_file_url'
     add_index :elements_attachments, [:attachment_type], name: 'elements_attachments_attachment_type'
 
     create_table :elements_chips do |t|

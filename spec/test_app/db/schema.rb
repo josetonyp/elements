@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20150917160645) do
     t.string   "file"
     t.string   "file_mime_type"
     t.string   "file_size"
+    t.string   "file_url"
     t.integer  "creator_id"
     t.integer  "updater_id"
     t.datetime "created_at",        null: false
@@ -32,6 +33,7 @@ ActiveRecord::Schema.define(version: 20150917160645) do
   end
 
   add_index "elements_attachments", ["attachment_type"], name: "elements_attachments_attachment_type"
+  add_index "elements_attachments", ["file_url"], name: "elements_attachments_file_url"
 
   create_table "elements_chip_translations", force: :cascade do |t|
     t.integer  "elements_chip_id", null: false

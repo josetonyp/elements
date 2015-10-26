@@ -26,6 +26,7 @@ module Elements
 
     before_save :create_content,  on: :create
 
+    before_destroy :check_for_root
     before_destroy :remove_content
 
     def format_json
@@ -74,6 +75,10 @@ module Elements
 
       def remove_content
         self.content.destroy if self.content.present?
+      end
+
+      def check_for_root
+        raise "Can't remove the root" if path == '/' and root?
       end
 
   end
