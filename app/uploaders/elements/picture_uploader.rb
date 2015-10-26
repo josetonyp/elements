@@ -5,7 +5,7 @@ module Elements
 
     # Include RMagick or MiniMagick support:
     # include CarrierWave::RMagick
-    # include CarrierWave::MiniMagick
+    include CarrierWave::MiniMagick
 
     # Choose what kind of storage to use for this uploader:
     storage :file
@@ -26,7 +26,8 @@ module Elements
     # end
 
     # Process files as they are uploaded:
-    # process :scale => [200, 300]
+    # Scaled the image to a max of 800 px wide and any height
+    process :resize_to_limit => [800, -1]
     #
     # def scale(width, height)
     #   # do something
