@@ -42,7 +42,7 @@ module Elements
           expect {
             post :create, { format: :json, :menu => FactoryGirl.attributes_for(:menu_item)}
           }.to change(Menu, :count).by(1)
-          expect(Menu.last.content).to be_present
+          expect(Menu.last.page).to be_present
         end
 
         it "creates a menu item under other item" do
@@ -69,7 +69,7 @@ module Elements
           JSON.parse(response.body).tap do |menu|
             expect(menu["parent_id"]).to eq(root_item.id)
             expect(menu["depth"]).to eq(1)
-            expect(menu["href"]).to eq("/#{root_item.content.path}/some-diff-path")
+            expect(menu["href"]).to eq("/#{root_item.page.path}/some-diff-path")
           end
         end
 
@@ -86,7 +86,7 @@ module Elements
           JSON.parse(response.body).tap do |menu|
             expect(menu["parent_id"]).to eq(parent.id)
             expect(menu["depth"]).to eq(2)
-            expect(menu["href"]).to eq("#{parent.content_path}/some-fancy-diff-path")
+            expect(menu["href"]).to eq("#{parent.page_path}/some-fancy-diff-path")
           end
         end
 

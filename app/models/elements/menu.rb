@@ -18,16 +18,16 @@ module Elements
     ATTRIBUTES = [:name, :parent_id, :label, :title, :subtitle, :icon_class, :custom_attributes, :path, :url, :target]
     acts_as_nested_set
 
-    belongs_to :content
+    belongs_to :page, foreign_key: "content_id"
     has_many :menu_translations, class_name: 'Menu::Translation', foreign_key: :elements_menu_id
     accepts_nested_attributes_for :menu_translations
 
     validates :name, presence: true
 
-    before_save :create_content,  on: :create
+    before_save :create_page,  on: :create
 
     before_destroy :check_for_root
-    before_destroy :remove_content
+    before_destroy :remove_page
 
     def format_json
       {
@@ -45,16 +45,16 @@ module Elements
       }
     end
 
-    def content_path
-      content.present? ? content.path : ""
+    def page_path
+      page.present? ? page.path : ""
     end
 
     def href
-      self.url.nil? ? self.content_path : self.url
+      self.url.nil? ? self.page_path : self.url
     end
 
     def full_path
-      (self.parent.present? ? "/#{parent.content_path.gsub(/^\//, '')}/" : "") << (@path.present? ? @path : name.parameterize)
+      (self.parent.present? ? "/#{parent.page_path.gsub(/^\//, '')}/" : "") << (@path.present? ? @path : name.parameterize)
     end
 
     def hierarchy_name
@@ -63,18 +63,18 @@ module Elements
 
     def update_path(new_path = nil)
       @path = new_path
-      content.path = full_path.gsub('//', '/')
-      content.save
-      content.path
+      page.path = full_path.gsub('//', '/')
+      page.save
+      page.path
     end
 
     private
-      def create_content
-        self.content = Page.create( name: self.name, value: self.name, path: full_path.gsub('//', '/') ) if self.content_id.nil?
+      def create_page
+        self.page = Page.create( name: self.name, value: self.name, path: full_path.gsub('//', '/') ) if self.content_id.nil?
       end
 
-      def remove_content
-        self.content.destroy if self.content.present?
+      def remove_page
+        self.page.destroy if self.page.present?
       end
 
       def check_for_root

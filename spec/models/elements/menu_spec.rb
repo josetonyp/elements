@@ -9,8 +9,8 @@ module Elements
       end
       item = menu_item.children.first
       item.update_path('some-fancy-new-path')
-      expect(item.content.path).to eq("/#{menu_item.content_path}/some-fancy-new-path")
-      expect(item.content_path).to eq("/#{menu_item.content_path}/some-fancy-new-path")
+      expect(item.page.path).to eq("/#{menu_item.page_path}/some-fancy-new-path")
+      expect(item.page_path).to eq("/#{menu_item.page_path}/some-fancy-new-path")
     end
 
     it "translates for fields" do
@@ -40,9 +40,9 @@ module Elements
       expect(menu_item.name).to eq("Some German Name")
     end
 
-    it "can't be deleted if content is published" do
+    it "can't be deleted if page is published" do
       menu_item = FactoryGirl.create(:menu_item)
-      menu_item.content.publish!
+      menu_item.page.publish!
       expect {
         menu_item.destroy
        }.to raise_error

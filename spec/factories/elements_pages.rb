@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :page, :class => 'Elements::Page' do
-    name "Element Page"
+    sequence(:name, 1000) { |n| "Element Page #{n}" }
     value "Element Page"
     creator_id "Element Page"
     updater_id "Element Page"
-    path "element-content"
+    sequence(:path, 1000) { |n| "element-page-path-#{n}" }
     title "Some title"
     meta_title "Element Page"
     meta_description "Element Page"

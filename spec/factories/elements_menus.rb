@@ -2,7 +2,7 @@ FactoryGirl.define do
 
   factory :menu_item, :class => 'Elements::Menu' do
     sequence(:name, 1000) { |n| "Page #{n}" }
-    content
+    content_id { FactoryGirl.create(:page).id }
     label "Menu Label"
     title "Menu Title"
     subtitle "Menu Subtitle"
