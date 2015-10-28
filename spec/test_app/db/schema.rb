@@ -11,145 +11,147 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150917160645) do
+ActiveRecord::Schema.define(version: 20151028123059) do
 
   create_table "elements_attachments", force: :cascade do |t|
-    t.string   "name"
-    t.string   "alt"
-    t.string   "title"
-    t.string   "copy_right"
-    t.string   "creator"
-    t.string   "custom_attributes"
-    t.string   "html_class"
-    t.string   "attachment_type"
-    t.string   "file"
-    t.string   "file_mime_type"
-    t.string   "file_size"
-    t.string   "file_url"
-    t.integer  "creator_id"
-    t.integer  "updater_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.string   "name",              limit: 255
+    t.string   "alt",               limit: 255
+    t.string   "title",             limit: 255
+    t.string   "copy_right",        limit: 255
+    t.string   "creator",           limit: 255
+    t.string   "custom_attributes", limit: 255
+    t.string   "html_class",        limit: 255
+    t.string   "attachment_type",   limit: 255
+    t.string   "file",              limit: 255
+    t.string   "file_mime_type",    limit: 255
+    t.string   "file_size",         limit: 255
+    t.string   "file_url",          limit: 255
+    t.integer  "creator_id",        limit: 4
+    t.integer  "updater_id",        limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "attachable_id",     limit: 4
+    t.string   "attachable_type",   limit: 255
   end
 
-  add_index "elements_attachments", ["attachment_type"], name: "elements_attachments_attachment_type"
-  add_index "elements_attachments", ["file_url"], name: "elements_attachments_file_url"
+  add_index "elements_attachments", ["attachment_type"], name: "elements_attachments_attachment_type", using: :btree
+  add_index "elements_attachments", ["file_url"], name: "elements_attachments_file_url", using: :btree
 
   create_table "elements_chip_translations", force: :cascade do |t|
-    t.integer  "elements_chip_id", null: false
-    t.string   "locale",           null: false
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.string   "value"
+    t.integer  "elements_chip_id", limit: 4,   null: false
+    t.string   "locale",           limit: 255, null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "value",            limit: 255
   end
 
-  add_index "elements_chip_translations", ["elements_chip_id"], name: "index_elements_chip_translations_on_elements_chip_id"
-  add_index "elements_chip_translations", ["locale"], name: "index_elements_chip_translations_on_locale"
+  add_index "elements_chip_translations", ["elements_chip_id"], name: "index_elements_chip_translations_on_elements_chip_id", using: :btree
+  add_index "elements_chip_translations", ["locale"], name: "index_elements_chip_translations_on_locale", using: :btree
 
   create_table "elements_chips", force: :cascade do |t|
-    t.text     "value"
-    t.string   "key"
-    t.string   "path"
-    t.integer  "parent_id"
-    t.integer  "lft"
-    t.integer  "rgt"
-    t.integer  "depth"
-    t.integer  "children_count"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.text     "value",          limit: 65535
+    t.string   "key",            limit: 255
+    t.string   "path",           limit: 255
+    t.integer  "parent_id",      limit: 4
+    t.integer  "lft",            limit: 4
+    t.integer  "rgt",            limit: 4
+    t.integer  "depth",          limit: 4
+    t.integer  "children_count", limit: 4
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
-  add_index "elements_chips", ["path"], name: "unique_elements_chips_attachment_path", unique: true
+  add_index "elements_chips", ["path"], name: "unique_elements_chips_attachment_path", unique: true, using: :btree
 
   create_table "elements_content_translations", force: :cascade do |t|
-    t.integer  "elements_content_id", null: false
-    t.string   "locale",              null: false
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-    t.text     "value"
-    t.text     "title"
-    t.text     "meta_title"
-    t.text     "meta_description"
-    t.text     "meta_keyword"
-    t.text     "excerpt"
+    t.integer  "elements_content_id", limit: 4,     null: false
+    t.string   "locale",              limit: 255,   null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.text     "value",               limit: 65535
+    t.text     "title",               limit: 65535
+    t.text     "meta_title",          limit: 65535
+    t.text     "meta_description",    limit: 65535
+    t.text     "meta_keyword",        limit: 65535
+    t.text     "excerpt",             limit: 65535
   end
 
-  add_index "elements_content_translations", ["elements_content_id"], name: "index_elements_content_translations_on_elements_content_id"
-  add_index "elements_content_translations", ["locale"], name: "index_elements_content_translations_on_locale"
+  add_index "elements_content_translations", ["elements_content_id"], name: "index_elements_content_translations_on_elements_content_id", using: :btree
+  add_index "elements_content_translations", ["locale"], name: "index_elements_content_translations_on_locale", using: :btree
 
   create_table "elements_contents", force: :cascade do |t|
-    t.string   "name"
-    t.text     "value"
-    t.boolean  "multiline",        default: false
-    t.integer  "position"
-    t.integer  "creator_id"
-    t.integer  "updater_id"
-    t.string   "path"
-    t.string   "template"
-    t.integer  "template_id"
-    t.text     "title"
-    t.text     "meta_title"
-    t.text     "meta_description"
-    t.text     "meta_keyword"
-    t.text     "excerpt"
-    t.string   "status"
-    t.string   "publish_at"
-    t.string   "content_type"
-    t.string   "latitude"
-    t.string   "longitude"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.string   "name",             limit: 255
+    t.text     "value",            limit: 65535
+    t.boolean  "multiline",                      default: false
+    t.integer  "position",         limit: 4
+    t.integer  "creator_id",       limit: 4
+    t.integer  "updater_id",       limit: 4
+    t.string   "path",             limit: 255
+    t.string   "template",         limit: 255
+    t.integer  "template_id",      limit: 4
+    t.text     "title",            limit: 65535
+    t.text     "meta_title",       limit: 65535
+    t.text     "meta_description", limit: 65535
+    t.text     "meta_keyword",     limit: 65535
+    t.text     "excerpt",          limit: 65535
+    t.string   "status",           limit: 255
+    t.string   "publish_at",       limit: 255
+    t.string   "content_type",     limit: 255
+    t.string   "latitude",         limit: 255
+    t.string   "longitude",        limit: 255
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
   end
 
-  add_index "elements_contents", ["content_type"], name: "elements_contents_content_type"
-  add_index "elements_contents", ["path"], name: "unique_elements_contents_path", unique: true
-  add_index "elements_contents", ["publish_at"], name: "elements_contents_publish_at"
-  add_index "elements_contents", ["status"], name: "elements_contents_status"
+  add_index "elements_contents", ["content_type"], name: "elements_contents_content_type", using: :btree
+  add_index "elements_contents", ["path"], name: "unique_elements_contents_path", unique: true, using: :btree
+  add_index "elements_contents", ["publish_at"], name: "elements_contents_publish_at", using: :btree
+  add_index "elements_contents", ["status"], name: "elements_contents_status", using: :btree
 
   create_table "elements_menu_translations", force: :cascade do |t|
-    t.integer  "elements_menu_id",  null: false
-    t.string   "locale",            null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-    t.string   "name"
-    t.string   "label"
-    t.string   "title"
-    t.string   "subtitle"
-    t.string   "icon_class"
-    t.string   "custom_attributes"
+    t.integer  "elements_menu_id",  limit: 4,   null: false
+    t.string   "locale",            limit: 255, null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "name",              limit: 255
+    t.string   "label",             limit: 255
+    t.string   "title",             limit: 255
+    t.string   "subtitle",          limit: 255
+    t.string   "icon_class",        limit: 255
+    t.string   "custom_attributes", limit: 255
   end
 
-  add_index "elements_menu_translations", ["elements_menu_id"], name: "index_elements_menu_translations_on_elements_menu_id"
-  add_index "elements_menu_translations", ["locale"], name: "index_elements_menu_translations_on_locale"
+  add_index "elements_menu_translations", ["elements_menu_id"], name: "index_elements_menu_translations_on_elements_menu_id", using: :btree
+  add_index "elements_menu_translations", ["locale"], name: "index_elements_menu_translations_on_locale", using: :btree
 
   create_table "elements_menus", force: :cascade do |t|
-    t.string   "name"
-    t.string   "label"
-    t.string   "title"
-    t.string   "url"
-    t.string   "target"
-    t.string   "subtitle"
-    t.string   "icon_class"
-    t.string   "custom_attributes"
-    t.integer  "content_id"
-    t.integer  "parent_id"
-    t.integer  "lft"
-    t.integer  "rgt"
-    t.integer  "depth"
-    t.integer  "children_count"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.string   "name",              limit: 255
+    t.string   "label",             limit: 255
+    t.string   "title",             limit: 255
+    t.string   "url",               limit: 255
+    t.string   "target",            limit: 255
+    t.string   "subtitle",          limit: 255
+    t.string   "icon_class",        limit: 255
+    t.string   "custom_attributes", limit: 255
+    t.integer  "content_id",        limit: 4
+    t.integer  "parent_id",         limit: 4
+    t.integer  "lft",               limit: 4
+    t.integer  "rgt",               limit: 4
+    t.integer  "depth",             limit: 4
+    t.integer  "children_count",    limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
   create_table "elements_versions", force: :cascade do |t|
-    t.string   "item_type",                     null: false
-    t.integer  "item_id",                       null: false
-    t.string   "event",                         null: false
-    t.string   "whodunnit"
-    t.text     "object",     limit: 1073741823
+    t.string   "item_type",  limit: 255,        null: false
+    t.integer  "item_id",    limit: 4,          null: false
+    t.string   "event",      limit: 255,        null: false
+    t.string   "whodunnit",  limit: 255
+    t.text     "object",     limit: 4294967295
     t.datetime "created_at"
   end
 
-  add_index "elements_versions", ["item_type", "item_id"], name: "index_elements_versions_on_item_type_and_item_id"
+  add_index "elements_versions", ["item_type", "item_id"], name: "index_elements_versions_on_item_type_and_item_id", using: :btree
 
 end

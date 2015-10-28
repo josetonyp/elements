@@ -3,6 +3,34 @@ Elements::Engine.routes.draw do
   resources :chips
   resources :attachments
   resources :pictures
-  resources :contents
-  resources :pages
+  resources :galleries do
+    member do
+      get :versions
+      get :field_versions
+      get :revert
+      get :attachments
+      put :add_attachment
+      put :remove_attachment
+    end
+  end
+  resources :contents do
+    member do
+      get :versions
+      get :field_versions
+      get :revert
+      get :attachments
+      put :add_attachment
+      put :remove_attachment
+    end
+  end
+  resources :pages do
+    member do
+      get :versions
+      get :field_versions
+      get :revert
+      get :attachments
+      put :add_attachment
+      put :remove_attachment
+    end
+  end
 end

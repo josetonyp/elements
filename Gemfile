@@ -20,8 +20,11 @@ gem 'paper_trail'
 gem 'awesome_nested_set'
 gem 'carrierwave'
 gem 'mini_magick'
+gem 'diffy'
+gem 'mysql2', '~> 0.3.13'
 
 group :development, :test do
+  gem 'timecop'
   gem "pry-rails"
   gem "rspec-rails"
   gem "factory_girl_rails"

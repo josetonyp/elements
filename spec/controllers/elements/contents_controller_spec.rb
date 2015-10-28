@@ -101,5 +101,80 @@ module Elements
       end
     end
 
+    describe "GET #versions" do
+      it "returns all versions of given content" do
+        new_content = nil
+        Timecop.freeze(Date.today - 30) do
+          new_content = Content.create(FactoryGirl.attributes_for(:content))
+          new_content.save
+          new_content.reload
+        end
+        Timecop.return
+        name = new_content.name
+        sleep 0.5
+        Timecop.freeze(Date.today - 10) do
+          new_content.name = "Some new name"
+          new_content.save
+          new_content.reload
+        end
+        Timecop.return
+        sleep 0.5
+        Timecop.freeze(Date.today - 5) do
+          new_content.name = "Some other new name"
+          new_content.save
+          new_content.reload
+        end
+        Timecop.return
+        sleep 0.5
+        new_content.reload
+        get :versions, { format: :json, id: new_content.to_param }
+        JSON.parse(response.body).tap do |versions|
+          expect(versions.count).to eq(3)
+          expect(versions.first['content']['name']).to eq("Some other new name")
+          expect(versions.last['content']['name']).to eq(name)
+        end
+      end
+    end
+
+    describe "GET #revert" do
+      it "revert given content to previous_version" do
+        new_content = nil
+        Timecop.freeze(Date.today - 30) do
+          new_content = Content.create(FactoryGirl.attributes_for(:content))
+          new_content.save
+          new_content.reload
+        end
+        name = new_content.name
+        new_content.name = "Oberholz test"
+        new_content.save
+        new_content.reload
+        get :revert, { format: :json, id: new_content.to_param }
+        JSON.parse(response.body).tap do |content|
+          expect(content['name']).to eq(name)
+          expect(content['versions']).to eq(3)
+        end
+      end
+    end
+
+    describe "GET #field_versions" do
+      it "returns all versions of given field" do
+        new_content = nil
+        Timecop.freeze(Date.today - 30) do
+          new_content = Content.create(FactoryGirl.attributes_for(:content))
+          new_content.save
+          new_content.reload
+        end
+        name = new_content.name
+        new_content.name = "Oberholz test"
+        new_content.save
+        new_content.reload
+        get :field_versions, { format: :json, id: new_content.to_param, field: "name"}
+        JSON.parse(response.body).tap do |versions|
+          expect(versions.count).to eq(2)
+          expect(versions.last['name']).to eq(name)
+        end
+      end
+    end
+
   end
 end

@@ -30,11 +30,76 @@ module Elements
 
     before_destroy :validate_published
 
+    has_many :attachments, as: :attachable
 
     def publish!
       self.publish_at = DateTime.now
       self.save
       self
+    end
+
+
+    def field_with_version(field)
+      {
+        id: id,
+        created_at: created_at,
+        :"#{field}" => self.send(field)
+      }
+    end
+
+    def json_format_versions
+      reload
+      first,*rest = *versions
+      first_version = {
+          version: versions.count,
+          version_created_at: first.created_at,
+          content: first.item.json_format
+        }
+      rest.reverse.inject([first_version]) do |all, version|
+        all << {
+          version: version.index,
+          version_created_at: version.created_at,
+          content: version.reify.json_format
+        }
+      end
+    end
+
+    def json_format_field_versions(field)
+      reload
+      first,*rest = *versions
+      first_version = {
+          version: versions.count,
+          version_created_at: first.created_at,
+          :"#{field}" => first.item.send(field)
+        }
+      rest.reverse.inject([first_version]) do |all, version|
+        all << {
+          version: version.index,
+          version_created_at: version.created_at,
+          :"#{field}" => version.reify.send(field)
+        }
+      end
+    end
+
+    def json_format
+      {
+        id: id,
+        name: name,
+        value: value,
+        path: path,
+        multiline: multiline,
+        position: position,
+        title: title,
+        meta_title: meta_title,
+        meta_description: meta_description,
+        meta_keyword: meta_keyword,
+        excerpt: excerpt,
+        status: status,
+        publish_at: publish_at,
+        latitude: latitude,
+        longitude: longitude,
+        versions: versions.count
+      }
     end
 
     private
