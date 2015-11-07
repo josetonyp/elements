@@ -7,7 +7,7 @@ Elements::Engine.routes.draw do
     member do
       get :versions
       get :field_versions
-      get :revert
+      put :revert
       get :attachments
       put :add_attachment
       put :remove_attachment
@@ -17,7 +17,7 @@ Elements::Engine.routes.draw do
     member do
       get :versions
       get :field_versions
-      get :revert
+      put :revert
       get :attachments
       put :add_attachment
       put :remove_attachment
@@ -27,7 +27,7 @@ Elements::Engine.routes.draw do
     member do
       get :versions
       get :field_versions
-      get :revert
+      put :revert
       get :attachments
       put :add_attachment
       put :remove_attachment

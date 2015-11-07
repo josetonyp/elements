@@ -136,7 +136,7 @@ module Elements
       end
     end
 
-    describe "GET #revert" do
+    describe "PUT #revert" do
       it "revert given content to previous_version" do
         new_content = nil
         Timecop.freeze(Date.today - 30) do
@@ -148,7 +148,7 @@ module Elements
         new_content.name = "Oberholz test"
         new_content.save
         new_content.reload
-        get :revert, { format: :json, id: new_content.to_param }
+        put :revert, { format: :json, id: new_content.to_param }
         JSON.parse(response.body).tap do |content|
           expect(content['name']).to eq(name)
           expect(content['versions']).to eq(3)

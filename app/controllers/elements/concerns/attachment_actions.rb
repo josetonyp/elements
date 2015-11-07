@@ -13,7 +13,7 @@ module Elements
       end
 
       # GET /attachments
-      api!
+      api :GET, '/:controller_path', 'List all items from :resource'
       def index
         @attachments = content_class.all.map(&:format_json)
         respond_to do |format|
@@ -22,7 +22,8 @@ module Elements
       end
 
       # GET /attachments/1
-      api!
+      api :GET, '/:controller_path/:id', 'Show one :resource'
+      param :id, :number, :desc => ":resource ID", :required => true
       def show
         respond_to do |format|
           format.json { render json: attachment.format_json.to_json }

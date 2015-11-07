@@ -19,6 +19,7 @@ module Elements
 
       # GET /menus/1
       api!
+      param :id, :number, :desc => ":resource ID", :required => true
       def show
         respond_to do |format|
           format.json { render json: menu.format_json.to_json }
@@ -56,7 +57,8 @@ module Elements
       end
 
       # DELETE /menus/1
-      api!
+      api :DELETE, '/menus/:id', 'Deletes given Menu'
+      param :id, Integer, :desc => "Chip ID", :required => true
       def destroy
         menu.destroy
         respond_to do |format|

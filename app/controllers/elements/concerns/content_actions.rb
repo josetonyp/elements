@@ -13,7 +13,7 @@ module Elements
       end
 
       # GET /contents
-      api :GET, '/:controller_path', 'Resource :resource_id'
+      api :GET, '/:controller_path', 'List all items from :resource'
       def index
         respond_to do |format|
           format.json { render json: content_class.published.all.to_json }
@@ -21,7 +21,8 @@ module Elements
       end
 
       # GET /contents/1
-      api!
+      api :GET, '/:controller_path/:id', 'Show one :resource'
+      param :id, Integer, :desc => ":resource ID", :required => true
       def show
         respond_to do |format|
           format.json { render json: content.to_json }
@@ -29,7 +30,28 @@ module Elements
       end
 
       # POST /contents
-      api!
+      api :POST, '/:controller_path', 'Creates a new :resource'
+      param :locale, String,
+        meta: { example: 'en' }, desc: "Locale in which given :resource will be created"
+      param ':resource', Hash do
+        param :path, String, required: true, desc: "Path to find given :resource from url"
+        param :name, String, required: true, desc: ":resource name"
+        param :value, [true, false], required: true, desc: ":resource content normally the HTML content"
+        param :excerpt, String, desc: ":resource short version of value"
+
+        param :multiline, [true, false], dafault: false
+        param :position, Integer
+        param :template, String
+
+        param :meta_title, String
+        param :meta_description, String
+        param :meta_keyword, String
+
+        param :status, String, desc: 'Status holder'
+        param :publish_at, String, required: true, desc: "Must be formated in the following formats", meta: { formats: { iso8601: DateTime.now.iso8601, rfc2822: DateTime.now.rfc2822, rfc3339: DateTime.now.rfc3339, rfc822: DateTime.now.rfc822 } }
+        param :latitude, Float
+        param :longitude, Float
+      end
       def create
         @content = content_class.new(content_params)
           respond_to do |format|
@@ -45,7 +67,28 @@ module Elements
       end
 
       # PATCH/PUT /contents/1
-      api!
+      api :PUT, '/:controller_path/:id', 'Update given :resource'
+      param :id, Integer, :desc => ":resource ID", :required => true
+      param :locale, String, meta: { example: "en" }, desc: "Locale in which given :resource will be created"
+      param ':resource', Hash do
+        param :path, String, required: true, desc: "Path to find given :resource from url"
+        param :name, String, required: true, desc: ":resource name"
+        param :value, [true, false], required: true, desc: ":resource content normally the HTML content"
+        param :excerpt, String, desc: ":resource short version of value"
+
+        param :multiline, [true, false], dafault: false
+        param :position, Integer
+        param :template, String
+
+        param :meta_title, String
+        param :meta_description, String
+        param :meta_keyword, String
+
+        param :status, String, desc: 'Status holder'
+        param :publish_at, String, required: true, desc: "Must be formated in the following formats", meta: { formats: { iso8601: DateTime.now.iso8601, rfc2822: DateTime.now.rfc2822, rfc3339: DateTime.now.rfc3339, rfc822: DateTime.now.rfc822 } }
+        param :latitude, Float
+        param :longitude, Float
+      end
       def update
         I18n.locale = params['locale'].to_sym if params.has_key?('locale')
         @content = content_class.find(params[:id])
@@ -62,7 +105,8 @@ module Elements
       end
 
       # DELETE /contents/1
-      api!
+      api :DELETE, '/:controller_path/:id', 'Deletes given :resource'
+      param :id, Integer, :desc => ":resource ID", :required => true
       def destroy
         content_class.find(params[:id]).destroy
         respond_to do |format|
@@ -70,7 +114,8 @@ module Elements
         end
       end
 
-      api!
+      api :GET, '/:controller_path/:id/versions', 'Show all versions for given :resource'
+      param :id, Integer, :desc => ":resource ID", :required => true
       def versions
         @content = content_class.find(params[:id])
         @content.reload
@@ -79,7 +124,8 @@ module Elements
         end
       end
 
-      api!
+      api :PUT, '/:controller_path/:id/revert', 'Revert given :resource to previous version'
+      param :id, Integer, :desc => ":resource ID", :required => true
       def revert
         @content = content_class.find(params[:id]).previous_version
         respond_to do |format|
@@ -93,7 +139,8 @@ module Elements
         end
       end
 
-      api!
+      api :GET, '/:controller_path/:id/field_versions', 'Show all versions for given :resource field'
+      param :id, Integer, :desc => ":resource ID", :required => true
       def field_versions
         @content = content_class.find(params[:id])
         @content.reload
@@ -102,7 +149,8 @@ module Elements
         end
       end
 
-      api!
+      api :GET, '/:controller_path/:id/attachments', 'Show all attachments for given :resource field'
+      param :id, Integer, :desc => ":resource ID", :required => true
       def attachments
         @content = content_class.find(params[:id])
         respond_to do |format|
@@ -112,7 +160,9 @@ module Elements
         end
       end
 
-      api!
+      api :PUT, '/:controller_path/:id/add_attachment', 'Adds an attachment to give :resource'
+      param :id, Integer, :desc => ":resource ID", :required => true
+      param :attachment_id, Integer, :desc => "Attachment ID", :required => true
       def add_attachment
         @content = content_class.find(params[:id])
         @content.attachments << Attachment.find(params[:attachment_id])
@@ -127,7 +177,9 @@ module Elements
         end
       end
 
-      api!
+      api :PUT, '/:controller_path/:id/remove_attachment', 'Removes an attachment from give :resource'
+      param :id, Integer, :desc => ":resource ID", :required => true
+      param :attachment_id, Integer, :desc => "Attachment ID", :required => true
       def remove_attachment
         @content = content_class.find(params[:id])
         @attachment = @content.attachments.find(params[:attachment_id])
