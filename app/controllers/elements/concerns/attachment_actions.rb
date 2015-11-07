@@ -2,6 +2,7 @@ module Elements
   module Concerns
     module AttachmentActions
       extend ActiveSupport::Concern
+      extend Apipie::DSL::Concern
 
       def self.superclass
         nil
@@ -12,6 +13,7 @@ module Elements
       end
 
       # GET /attachments
+      api!
       def index
         @attachments = content_class.all.map(&:format_json)
         respond_to do |format|
@@ -20,6 +22,7 @@ module Elements
       end
 
       # GET /attachments/1
+      api!
       def show
         respond_to do |format|
           format.json { render json: attachment.format_json.to_json }
@@ -27,6 +30,7 @@ module Elements
       end
 
       # POST /attachments
+      api!
       def create
         @attachment = content_class.new(attachment_params)
         respond_to do |format|
@@ -41,6 +45,7 @@ module Elements
       end
 
       # PATCH/PUT /attachments/1
+      api!
       def update
         @attachment = attachment
         respond_to do |format|
@@ -55,6 +60,7 @@ module Elements
       end
 
       # DELETE /attachments/1
+      api!
       def destroy
         attachment.destroy
         respond_to do |format|
