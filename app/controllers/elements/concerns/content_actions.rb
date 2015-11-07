@@ -2,12 +2,18 @@ module Elements
   module Concerns
     module ContentActions
       extend ActiveSupport::Concern
+      extend Apipie::DSL::Concern
+
+      def self.superclass
+        nil
+      end
 
       def content_class
-        Content
+        Elements::Content
       end
 
       # GET /contents
+      api :GET, '/:controller_path', 'Resource :resource_id'
       def index
         respond_to do |format|
           format.json { render json: content_class.published.all.to_json }
@@ -15,6 +21,7 @@ module Elements
       end
 
       # GET /contents/1
+      api!
       def show
         respond_to do |format|
           format.json { render json: content.to_json }
@@ -22,6 +29,7 @@ module Elements
       end
 
       # POST /contents
+      api!
       def create
         @content = content_class.new(content_params)
           respond_to do |format|
@@ -37,6 +45,7 @@ module Elements
       end
 
       # PATCH/PUT /contents/1
+      api!
       def update
         I18n.locale = params['locale'].to_sym if params.has_key?('locale')
         @content = content_class.find(params[:id])
@@ -53,6 +62,7 @@ module Elements
       end
 
       # DELETE /contents/1
+      api!
       def destroy
         content_class.find(params[:id]).destroy
         respond_to do |format|
@@ -60,6 +70,7 @@ module Elements
         end
       end
 
+      api!
       def versions
         @content = content_class.find(params[:id])
         @content.reload
@@ -68,6 +79,7 @@ module Elements
         end
       end
 
+      api!
       def revert
         @content = content_class.find(params[:id]).previous_version
         respond_to do |format|
@@ -81,6 +93,7 @@ module Elements
         end
       end
 
+      api!
       def field_versions
         @content = content_class.find(params[:id])
         @content.reload
@@ -89,6 +102,7 @@ module Elements
         end
       end
 
+      api!
       def attachments
         @content = content_class.find(params[:id])
         respond_to do |format|
@@ -98,6 +112,7 @@ module Elements
         end
       end
 
+      api!
       def add_attachment
         @content = content_class.find(params[:id])
         @content.attachments << Attachment.find(params[:attachment_id])
@@ -112,6 +127,7 @@ module Elements
         end
       end
 
+      api!
       def remove_attachment
         @content = content_class.find(params[:id])
         @attachment = @content.attachments.find(params[:attachment_id])

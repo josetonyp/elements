@@ -48,6 +48,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    apipie-rails (0.3.5)
+      json
     arel (6.0.3)
     awesome_nested_set (3.0.2)
       activerecord (>= 4.0.0, < 5)
@@ -169,6 +171,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  apipie-rails
   awesome_nested_set
   capybara
   carrierwave

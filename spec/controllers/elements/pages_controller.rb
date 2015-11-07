@@ -21,7 +21,7 @@ module Elements
 
     describe "POST #create" do
       context "with valid params" do
-        it "creates a new Content" do
+        it "creates a new Page" do
           expect {
             post :create, { format: :json, :content => FactoryGirl.attributes_for(:page) }
           }.to change(Page, :count).by(1)

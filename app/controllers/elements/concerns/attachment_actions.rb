@@ -3,8 +3,12 @@ module Elements
     module AttachmentActions
       extend ActiveSupport::Concern
 
+      def self.superclass
+        nil
+      end
+
       def content_class
-        Attachment
+        Elements::Attachment
       end
 
       # GET /attachments

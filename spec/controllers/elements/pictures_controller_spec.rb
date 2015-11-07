@@ -25,5 +25,16 @@ module Elements
         end
       end
     end
+
+    describe "POST #create" do
+      context "with valid params" do
+        it "creates a new Picture" do
+          attachment = FactoryGirl.attributes_for(:picture)
+          expect {
+            post :create, { format: :json, :attachment => attachment}
+          }.to change(Picture, :count).by(1)
+        end
+      end
+    end
   end
 end

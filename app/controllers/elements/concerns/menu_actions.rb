@@ -2,8 +2,14 @@ module Elements
   module Concerns
     module MenuActions
       extend ActiveSupport::Concern
+      extend Apipie::DSL::Concern
+
+      def self.superclass
+        nil
+      end
 
       # GET /menus
+      api!
       def index
         @menus = Menu.all.map(&:format_json)
         respond_to do |format|
@@ -12,6 +18,7 @@ module Elements
       end
 
       # GET /menus/1
+      api!
       def show
         respond_to do |format|
           format.json { render json: menu.format_json.to_json }
@@ -19,6 +26,7 @@ module Elements
       end
 
       # POST /menus
+      api!
       def create
         @menu = Menu.new(menu_params)
         respond_to do |format|
@@ -33,6 +41,7 @@ module Elements
       end
 
       # PATCH/PUT /menus/1
+      api!
       def update
         @menu = menu
         respond_to do |format|
@@ -47,6 +56,7 @@ module Elements
       end
 
       # DELETE /menus/1
+      api!
       def destroy
         menu.destroy
         respond_to do |format|

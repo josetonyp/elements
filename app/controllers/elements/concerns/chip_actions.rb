@@ -2,8 +2,14 @@ module Elements
   module Concerns
     module ChipActions
       extend ActiveSupport::Concern
+      extend Apipie::DSL::Concern
+
+      def self.superclass
+        nil
+      end
 
       # GET /menus
+      api!
       def index
         @chips = Chip.all.map(&:format_json)
         respond_to do |format|
@@ -12,6 +18,7 @@ module Elements
       end
 
       # GET /chips/1
+      api!
       def show
         respond_to do |format|
           format.json { render json: chip.to_json }
@@ -19,6 +26,7 @@ module Elements
       end
 
       # POST /chips
+      api!
       def create
         @chip = Chip.new(chip_params)
         respond_to do |format|
@@ -33,6 +41,7 @@ module Elements
       end
 
       # PATCH/PUT /chips/1
+      api!
       def update
         @chip = chip
         chip_params_filtered = chip_params
@@ -49,6 +58,7 @@ module Elements
       end
 
       # DELETE /menus/1
+      api!
       def destroy
         chip.destroy
         respond_to do |format|

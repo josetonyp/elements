@@ -6,6 +6,18 @@ module Elements
     let(:picture) { FactoryGirl.create(:picture)  }
     let(:gallery) { FactoryGirl.create(:gallery)  }
 
+
+    describe "POST #create" do
+      context "with valid params" do
+        it "creates a new Gallery" do
+          expect {
+            post :create, { format: :json, :content => FactoryGirl.attributes_for(:gallery) }
+          }.to change(Gallery, :count).by(1)
+        end
+      end
+    end
+
+
     describe "#attachments" do
       it "list all attachments for given content" do
         gallery.attachments << picture

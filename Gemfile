@@ -22,6 +22,7 @@ gem 'carrierwave'
 gem 'mini_magick'
 gem 'diffy'
 gem 'mysql2', '~> 0.3.13'
+gem 'apipie-rails'
 
 group :development, :test do
   gem 'timecop'
