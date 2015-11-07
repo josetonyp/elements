@@ -62,8 +62,8 @@ module Elements
     process :save_content_type_and_size_in_model
 
     def save_content_type_and_size_in_model
-      model.file_mime_type = file.content_type if file.content_type
-      model.file_size = file.size
+      model.file_mime_type = file.content_type if model.respond_to?(:file_mime_type) && file.content_type
+      model.file_size = file.size if model.respond_to?(:file_size)
     end
 
     def extension_white_list
