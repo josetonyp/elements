@@ -15,5 +15,13 @@ module Elements
     has_many :attachments, foreign_key: 'creator_id', class_name: Elements::User
     has_many :pictures, foreign_key: 'creator_id', class_name: Elements::User
 
+
+    def json_format
+      {
+        id: id,
+        name: name,
+        lastname: lastname,
+      }
+    end
   end
 end
