@@ -12,7 +12,7 @@ module Elements
 
     end
 
-    ATTRIBUTES = [:key, :value, :parent_id]
+    ATTRIBUTES = [:key, :value, :parent_id, :creator_id, :updater_id]
     translates :value
     acts_as_nested_set
 
