@@ -15,7 +15,6 @@ I18n.available_locales = [:en, :de, :es]
 
 RSpec.configure do |config|
   config.mock_with :rspec
-  config.use_transactional_fixtures = true
   config.infer_base_class_for_anonymous_controllers = false
   config.order = "random"
 
@@ -44,6 +43,18 @@ RSpec.configure do |config|
 
   config.before(:each) do
     I18n.locale = :en
+  end
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
   end
 
 # The settings below are suggested to provide a good initial experience
