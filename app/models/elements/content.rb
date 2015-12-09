@@ -35,6 +35,8 @@ module Elements
     belongs_to :creator, class_name: User
     belongs_to :updator, class_name: User
 
+    has_many :comments
+
     def publish!
       self.publish_at = DateTime.now
       self.save

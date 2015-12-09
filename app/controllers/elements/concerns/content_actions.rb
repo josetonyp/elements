@@ -54,16 +54,16 @@ module Elements
       end
       def create
         @content = content_class.new(content_params)
-          respond_to do |format|
-            format.json do
-              # It's necesary to reload to update the translation history
-              if @content.save && @content.reload
-                render json: @content.json_format.to_json
-              else
-                render json: { errors: @content.errors }.to_json
-              end
+        respond_to do |format|
+          format.json do
+            # It's necesary to reload to update the translation history
+            if @content.save && @content.reload
+              render json: @content.json_format.to_json
+            else
+              render json: { errors: @content.errors }.to_json
             end
           end
+        end
       end
 
       # PATCH/PUT /contents/1

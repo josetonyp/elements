@@ -33,7 +33,7 @@ class CreateVersions < ActiveRecord::Migration
       t.text :meta_keyword
       t.text :excerpt
       t.string :status
-      t.string :publish_at
+      t.timestamp :publish_at
       t.string :content_type
       t.string :latitude
       t.string :longitude

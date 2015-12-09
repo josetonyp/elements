@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151209153322) do
+ActiveRecord::Schema.define(version: 20151209183947) do
 
   create_table "elements_attachments", force: :cascade do |t|
     t.string   "name",              limit: 255
@@ -65,6 +65,21 @@ ActiveRecord::Schema.define(version: 20151209153322) do
 
   add_index "elements_chips", ["path"], name: "unique_elements_chips_attachment_path", unique: true, using: :btree
 
+  create_table "elements_comments", force: :cascade do |t|
+    t.integer  "content_id",     limit: 4
+    t.text     "text",           limit: 65535
+    t.integer  "creator_id",     limit: 4
+    t.integer  "updater_id",     limit: 4
+    t.datetime "publish_at"
+    t.integer  "parent_id",      limit: 4
+    t.integer  "lft",            limit: 4
+    t.integer  "rgt",            limit: 4
+    t.integer  "depth",          limit: 4
+    t.integer  "children_count", limit: 4
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
   create_table "elements_content_translations", force: :cascade do |t|
     t.integer  "elements_content_id", limit: 4,     null: false
     t.string   "locale",              limit: 255,   null: false
@@ -97,7 +112,7 @@ ActiveRecord::Schema.define(version: 20151209153322) do
     t.text     "meta_keyword",     limit: 65535
     t.text     "excerpt",          limit: 65535
     t.string   "status",           limit: 255
-    t.string   "publish_at",       limit: 255
+    t.datetime "publish_at"
     t.string   "content_type",     limit: 255
     t.string   "latitude",         limit: 255
     t.string   "longitude",        limit: 255
@@ -148,20 +163,28 @@ ActiveRecord::Schema.define(version: 20151209153322) do
   end
 
   create_table "elements_users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "", null: false
-    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "email",                  limit: 255,   default: "", null: false
+    t.string   "encrypted_password",     limit: 255,   default: "", null: false
     t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,   default: 0,  null: false
+    t.integer  "sign_in_count",          limit: 4,     default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
     t.string   "last_sign_in_ip",        limit: 255
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
     t.integer  "creator_id",             limit: 4
     t.integer  "updater_id",             limit: 4
+    t.datetime "published"
+    t.string   "title",                  limit: 255
+    t.string   "display_name",           limit: 255
+    t.text     "resume",                 limit: 65535
+    t.string   "picture",                limit: 255
+    t.string   "avatar",                 limit: 255
+    t.string   "name",                   limit: 255
+    t.string   "lastname",               limit: 255
   end
 
   add_index "elements_users", ["email"], name: "index_elements_users_on_email", unique: true, using: :btree

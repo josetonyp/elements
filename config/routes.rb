@@ -22,6 +22,7 @@ Elements::Engine.routes.draw do
       put :add_attachment
       put :remove_attachment
     end
+    resources :comments
   end
   resources :pages do
     member do
