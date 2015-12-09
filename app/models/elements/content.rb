@@ -12,7 +12,7 @@ module Elements
 
     end
 
-    ATTRIBUTES = [:name, :value, :path, :multiline, :position, :creator_id, :updater_id, :title, :meta_title, :meta_description, :meta_keyword, :excerpt, :status, :publish_at, :latitude, :longitude]
+    ATTRIBUTES = [:name, :value, :path, :multiline, :position, :title, :meta_title, :meta_description, :meta_keyword, :excerpt, :status, :publish_at, :latitude, :longitude]
     has_paper_trail class_name: 'Elements::Version'
 
     translates :value, :title, :meta_title, :meta_description, :meta_keyword, :excerpt
@@ -31,6 +31,9 @@ module Elements
     before_destroy :validate_published
 
     has_many :attachments, as: :attachable
+
+    belongs_to :creator, class_name: User
+    belongs_to :updator, class_name: User
 
     def publish!
       self.publish_at = DateTime.now

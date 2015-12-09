@@ -18,6 +18,9 @@ module Elements
     ATTRIBUTES = [:name, :parent_id, :label, :title, :subtitle, :icon_class, :custom_attributes, :path, :url, :target]
     acts_as_nested_set
 
+    belongs_to :creator, class_name: User
+    belongs_to :updator, class_name: User
+
     belongs_to :page, foreign_key: "content_id"
     has_many :menu_translations, class_name: 'Menu::Translation', foreign_key: :elements_menu_id
     accepts_nested_attributes_for :menu_translations

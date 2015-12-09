@@ -2,13 +2,15 @@ module Elements
   class Attachment < Base
     self.inheritance_column = :attachment_type
 
-    ATTRIBUTES = [:name, :alt, :title, :copy_right, :creator, :custom_attributes, :html_class, :file]
+    ATTRIBUTES = [:name, :alt, :title, :copy_right, :custom_attributes, :html_class, :file]
 
     mount_uploader :file, FileUploader
 
     validates :file, presence: true
 
     belongs_to :attachable, polymorphic: true
+    belongs_to :creator, class_name: User
+    belongs_to :updator, class_name: User
 
     def format_json
       out = {

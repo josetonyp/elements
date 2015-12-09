@@ -28,6 +28,9 @@ module Elements
 
     before_save :add_full_path, on: :create
 
+    belongs_to :creator, class_name: User
+    belongs_to :updator, class_name: User
+
     def name
       path
     end

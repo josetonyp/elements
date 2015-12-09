@@ -4,7 +4,7 @@ FactoryGirl.define do
     alt "Some Attachment Info"
     title "Some Attachment Info"
     copy_right "Some Attachment Info"
-    creator "Some Attachment Info"
+    author "Some Attachment Info"
     custom_attributes "Some Attachment Info"
     html_class "Some Attachment Info"
     file { Rack::Test::UploadedFile.new(File.join('spec', 'attachments', 'SamplePDF.pdf')) }
@@ -14,7 +14,7 @@ FactoryGirl.define do
     alt "Some Attachment Info"
     title "Some Attachment Info"
     copy_right "Some Attachment Info"
-    creator "Some Attachment Info"
+    author "Some Attachment Info"
     custom_attributes "Some Attachment Info"
     html_class "Some Attachment Info"
     file { Rack::Test::UploadedFile.new(File.join('spec', 'attachments', 'signal.png')) }

@@ -11,14 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151028123059) do
+ActiveRecord::Schema.define(version: 20151209153322) do
 
   create_table "elements_attachments", force: :cascade do |t|
     t.string   "name",              limit: 255
     t.string   "alt",               limit: 255
     t.string   "title",             limit: 255
     t.string   "copy_right",        limit: 255
-    t.string   "creator",           limit: 255
     t.string   "custom_attributes", limit: 255
     t.string   "html_class",        limit: 255
     t.string   "attachment_type",   limit: 255
@@ -32,6 +31,7 @@ ActiveRecord::Schema.define(version: 20151028123059) do
     t.datetime "updated_at",                    null: false
     t.integer  "attachable_id",     limit: 4
     t.string   "attachable_type",   limit: 255
+    t.integer  "author",            limit: 4
   end
 
   add_index "elements_attachments", ["attachment_type"], name: "elements_attachments_attachment_type", using: :btree
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(version: 20151028123059) do
     t.integer  "children_count", limit: 4
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.integer  "creator_id",     limit: 4
+    t.integer  "updater_id",     limit: 4
   end
 
   add_index "elements_chips", ["path"], name: "unique_elements_chips_attachment_path", unique: true, using: :btree
@@ -141,7 +143,29 @@ ActiveRecord::Schema.define(version: 20151028123059) do
     t.integer  "children_count",    limit: 4
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
+    t.integer  "creator_id",        limit: 4
+    t.integer  "updater_id",        limit: 4
   end
+
+  create_table "elements_users", force: :cascade do |t|
+    t.string   "email",                  limit: 255, default: "", null: false
+    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "reset_password_token",   limit: 255
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          limit: 4,   default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.integer  "creator_id",             limit: 4
+    t.integer  "updater_id",             limit: 4
+  end
+
+  add_index "elements_users", ["email"], name: "index_elements_users_on_email", unique: true, using: :btree
+  add_index "elements_users", ["reset_password_token"], name: "index_elements_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "elements_versions", force: :cascade do |t|
     t.string   "item_type",  limit: 255,        null: false

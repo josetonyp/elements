@@ -58,7 +58,7 @@ module Elements
 
       # DELETE /menus/1
       api :DELETE, '/menus/:id', 'Deletes given Menu'
-      param :id, Integer, :desc => "Chip ID", :required => true
+      param :id, :number, :desc => "Chip ID", :required => true
       def destroy
         menu.destroy
         respond_to do |format|

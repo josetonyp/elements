@@ -23,6 +23,7 @@ gem 'mini_magick'
 gem 'diffy'
 gem 'mysql2', '~> 0.3.13'
 gem 'apipie-rails'
+gem 'devise'
 
 group :development, :test do
   gem 'timecop'

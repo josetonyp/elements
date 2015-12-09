@@ -22,7 +22,7 @@ module Elements
 
       # GET /contents/1
       api :GET, '/:controller_path/:id', 'Show one :resource'
-      param :id, Integer, :desc => ":resource ID", :required => true
+      param :id, :number, :desc => ":resource ID", :required => true
       def show
         respond_to do |format|
           format.json { render json: content.to_json }
@@ -68,7 +68,7 @@ module Elements
 
       # PATCH/PUT /contents/1
       api :PUT, '/:controller_path/:id', 'Update given :resource'
-      param :id, Integer, :desc => ":resource ID", :required => true
+      param :id, :number, :desc => ":resource ID", :required => true
       param :locale, String, meta: { example: "en" }, desc: "Locale in which given :resource will be created"
       param ':resource', Hash do
         param :path, String, required: true, desc: "Path to find given :resource from url"
@@ -106,7 +106,7 @@ module Elements
 
       # DELETE /contents/1
       api :DELETE, '/:controller_path/:id', 'Deletes given :resource'
-      param :id, Integer, :desc => ":resource ID", :required => true
+      param :id, :number, :desc => ":resource ID", :required => true
       def destroy
         content_class.find(params[:id]).destroy
         respond_to do |format|
@@ -115,7 +115,7 @@ module Elements
       end
 
       api :GET, '/:controller_path/:id/versions', 'Show all versions for given :resource'
-      param :id, Integer, :desc => ":resource ID", :required => true
+      param :id, :number, :desc => ":resource ID", :required => true
       def versions
         @content = content_class.find(params[:id])
         @content.reload
@@ -125,7 +125,7 @@ module Elements
       end
 
       api :PUT, '/:controller_path/:id/revert', 'Revert given :resource to previous version'
-      param :id, Integer, :desc => ":resource ID", :required => true
+      param :id, :number, :desc => ":resource ID", :required => true
       def revert
         @content = content_class.find(params[:id]).previous_version
         respond_to do |format|
@@ -140,7 +140,7 @@ module Elements
       end
 
       api :GET, '/:controller_path/:id/field_versions', 'Show all versions for given :resource field'
-      param :id, Integer, :desc => ":resource ID", :required => true
+      param :id, :number, :desc => ":resource ID", :required => true
       def field_versions
         @content = content_class.find(params[:id])
         @content.reload
@@ -150,7 +150,7 @@ module Elements
       end
 
       api :GET, '/:controller_path/:id/attachments', 'Show all attachments for given :resource field'
-      param :id, Integer, :desc => ":resource ID", :required => true
+      param :id, :number, :desc => ":resource ID", :required => true
       def attachments
         @content = content_class.find(params[:id])
         respond_to do |format|
@@ -161,7 +161,7 @@ module Elements
       end
 
       api :PUT, '/:controller_path/:id/add_attachment', 'Adds an attachment to give :resource'
-      param :id, Integer, :desc => ":resource ID", :required => true
+      param :id, :number, :desc => ":resource ID", :required => true
       param :attachment_id, Integer, :desc => "Attachment ID", :required => true
       def add_attachment
         @content = content_class.find(params[:id])
@@ -178,7 +178,7 @@ module Elements
       end
 
       api :PUT, '/:controller_path/:id/remove_attachment', 'Removes an attachment from give :resource'
-      param :id, Integer, :desc => ":resource ID", :required => true
+      param :id, :number, :desc => ":resource ID", :required => true
       param :attachment_id, Integer, :desc => "Attachment ID", :required => true
       def remove_attachment
         @content = content_class.find(params[:id])

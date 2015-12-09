@@ -60,7 +60,7 @@ module Elements
 
       # DELETE /chips/1
       api :DELETE, '/chips/:id', 'Deletes given Chip'
-      param :id, Integer, :desc => "Chip ID", :required => true
+      param :id, :number, :desc => "Chip ID", :required => true
       def destroy
         chip.destroy
         respond_to do |format|
