@@ -17,8 +17,19 @@ module Elements
     def json_format
       {
         id: id,
-        text: text
+        text: text,
+        published: published?
       }
+    end
+
+    def publish!
+      self.publish_at = DateTime.now
+      save!
+      self
+    end
+
+    def published?
+      !publish_at.nil? && publish_at < DateTime.now
     end
 
   end

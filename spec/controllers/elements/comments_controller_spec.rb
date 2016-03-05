@@ -9,13 +9,24 @@ module Elements
     let(:upublished_comment2) { FactoryGirl.create :comment, content: content }
 
     describe "GET #index" do
-      it "returns a list of published comments for given content" do
+
+      before do
         comment &&
         comment2 &&
         upublished_comment2
-        get :index, { format: :json, content_id: content.to_param }
+      end
+
+      it "returns a list of published comments for given content" do
+        get :index, { format: :json, content_id: content.to_param, filter: 'published' }
         JSON.parse(response.body).tap do |comments|
           expect(comments.count).to eq(2)
+        end
+      end
+
+      it "returns a list of all comments" do
+        get :index, { format: :json, content_id: content.to_param }
+        JSON.parse(response.body).tap do |comments|
+          expect(comments.count).to eq(3)
         end
       end
     end
@@ -45,6 +56,14 @@ module Elements
             post :create, { format: :json, content_id: content.to_param, :comment => { text: ""} }
           }.to_not change(content.comments, :count)
         end
+      end
+    end
+
+    describe "POST #create" do
+      it "publishs a comment" do
+        upublished_comment2
+        put :publish, { format: :json, content_id: content.to_param, id: upublished_comment2.to_param}
+        expect(upublished_comment2.reload).to be_published
       end
     end
   end
