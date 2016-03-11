@@ -15,7 +15,6 @@ gemspec
 
 gem 'carrierwave'
 gem 'globalize', '~> 5.0.0'
-gem 'redcarpet'
 gem 'paper_trail'
 gem 'awesome_nested_set'
 gem 'carrierwave'
